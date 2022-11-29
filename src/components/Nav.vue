@@ -1,6 +1,8 @@
 <template>
   <div class="nav">
-    <div></div>
+    <div class="leftList">
+      <router-link to=""></router-link>
+    </div>
     <div>登录</div>
   </div>
 </template>

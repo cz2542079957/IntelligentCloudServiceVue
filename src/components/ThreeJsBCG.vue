@@ -123,7 +123,7 @@ export default {
 
       container.style.touchAction = "none";
       //监听鼠标移动事件
-      container.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("pointermove", onPointerMove);
 
       //调整波浪的位置
       container.style.position = "relative";
