@@ -1,0 +1,28 @@
+"filename", "language", "TypeScript", "JSON", "JSON with Comments", "HTML", "YAML", "Vue", "CSS", "XML", "SCSS", "Markdown", "comment", "blank", "total"
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\README.md", "Markdown", 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 8, 17
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\index.html", "HTML", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\package.json", "JSON", 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\pnpm-lock.yaml", "YAML", 0, 0, 0, 0, 2852, 0, 0, 0, 0, 0, 0, 356, 3208
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\public\vite.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\App.vue", "Vue", 0, 0, 0, 0, 0, 141, 0, 0, 0, 0, 0, 18, 159
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\scss\all.scss", "SCSS", 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 5
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\scss\constVal.scss", "SCSS", 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 3, 22
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\scss\themeColors.scss", "SCSS", 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 2, 8
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\scss\themeHandler.scss", "SCSS", 0, 0, 0, 0, 0, 0, 0, 0, 56, 0, 10, 11, 77
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\scss\theme\darkTheme.scss", "SCSS", 0, 0, 0, 0, 0, 0, 0, 0, 57, 0, 0, 9, 66
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\scss\theme\lightTheme.scss", "SCSS", 0, 0, 0, 0, 0, 0, 0, 0, 57, 0, 0, 9, 66
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\assets\vue.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\components\Nav.vue", "Vue", 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 2, 14
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\components\Signin.vue", "Vue", 0, 0, 0, 0, 0, 185, 0, 0, 0, 0, 1, 19, 205
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\components\ThreeJsBCG.vue", "Vue", 0, 0, 0, 0, 0, 148, 0, 0, 0, 0, 29, 37, 214
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\main.ts", "TypeScript", 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 22
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\pages\Content.vue", "Vue", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 2, 17
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\pinia\nameSpace.ts", "TypeScript", 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1, 13
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\pinia\themeSwitch.ts", "TypeScript", 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 37
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\router\index.ts", "TypeScript", 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\style.css", "CSS", 0, 0, 0, 0, 0, 0, 72, 0, 0, 0, 0, 10, 82
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\src\vite-env.d.ts", "TypeScript", 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 8
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\tsconfig.json", "JSON with Comments", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 1, 19
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\tsconfig.node.json", "JSON", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"c:\Users\chenzhen\Desktop\CODING\Vue\IntelligentCloudServiceVue\vite.config.ts", "TypeScript", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 16
+"Total", "-", 83, 39, 18, 12, 2852, 501, 72, 2, 197, 9, 51, 510, 4346

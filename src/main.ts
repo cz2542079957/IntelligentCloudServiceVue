@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
-// import router from "./router";
+import router from "./router";
 import axios from "axios";
 import { createPinia } from "pinia";
 import ElementPlus from "element-plus";
@@ -9,6 +9,7 @@ import * as ElementIcons from "@element-plus/icons-vue";
 
 const app = createApp(App);
 app.use(createPinia());
+app.use(router);
 
 app.config.globalProperties.$axios = axios;
 

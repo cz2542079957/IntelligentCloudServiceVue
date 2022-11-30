@@ -4,8 +4,18 @@ const router = createRouter({
 	history: createWebHashHistory(),
 	routes: [
 		{
-			path: "/content",
-			component: () => import("../pages/Content.vue"),
+			path: "/",
+			redirect: {
+				path: "/Introduce",
+			},
+		},
+		{
+			path: "/Introduce",
+			component: () => import("../pages/Introduce.vue"),
+		},
+		{
+			path: "/MNIST",
+			component: () => import("../pages/MNIST.vue"),
 		},
 	],
 });

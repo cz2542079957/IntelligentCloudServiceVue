@@ -1,30 +1,34 @@
 <template>
-  <template v-if="!config.signin">
-    <div :class="'main ' + (config.page == 1 ? 'start' : '')">
-      <div class="welcome">
-        <ThreeJsBCG class="bcg"></ThreeJsBCG>
-        <div class="layer unselectable">
-          <div class="title">智能云服务</div>
+  <div>
+    <template v-if="!config.signin">
+      <div :class="'main ' + (config.page == 1 ? 'start' : '')">
+        <div class="welcome">
+          <ThreeJsBCG class="bcg"></ThreeJsBCG>
+          <div class="layer unselectable">
+            <div class="title">智能云服务</div>
+          </div>
+          <div class="filter"></div>
+          <div
+            class="more pointer unselectable"
+            @click="start"
+          >
+            开始
+            <el-icon>
+              <ArrowDown />
+            </el-icon>
+          </div>
         </div>
-        <div class="filter"></div>
-        <div
-          class="more pointer unselectable"
-          @click="start"
-        >
-          开始
-          <el-icon>
-            <ArrowDown />
-          </el-icon>
+        <div class="content">
+          <Content v-model:page="config.page"></Content>
         </div>
       </div>
-      <div class="content">
-        <Content></Content>
-      </div>
-    </div>
-  </template>
-  <template v-else>
-    <Signin></Signin>
-  </template>
+    </template>
+    <template v-else>
+      <transition enter-active-class="animate__animated animate__fadeInUp">
+        <Signin v-model:signin="config.signin"></Signin>
+      </transition>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,8 +41,8 @@ const themeSwitch = useThemeSwitchStore();
 const { proxy } = getCurrentInstance() as any;
 
 var config = reactive({
-  page: 0,
-  signin: true,
+  page: 1,
+  signin: false,
 });
 
 function start() {

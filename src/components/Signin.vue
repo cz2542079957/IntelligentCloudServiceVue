@@ -1,23 +1,64 @@
 <template>
   <div class="signin">
+    <div
+      class="back pointer"
+      @click="config.back"
+    >
+      返回
+    </div>
     <div class="box">
+      <div class="title unselectable">{{config.title}}</div>
       <input type="text">
       <input type="text">
-      <el-button round>Round</el-button>
+      <div class="btn pointer unselectable">开始</div>
     </div>
-    <div class="switch pointer">
-      注册
+    <div
+      class="switch pointer unselectable"
+      @click="config.switch"
+    >
+      {{config.title === "登录" ? "注册" : "登录"}}
     </div>
-    <div class="forget pointer">
+    <div class="forget pointer unselectable">
       忘记密码
     </div>
   </div>
 </template>
 
 <script lang='ts' setup>
+import { getCurrentInstance, onMounted, reactive } from "vue";
+const { proxy } = getCurrentInstance() as any;
+
+const props = defineProps(["signin"]);
+const emit = defineEmits(["update:signin"]);
+
+var config = reactive({
+  title: "登录",
+  //登录 or 注册
+  switch: () => {
+    if (config.title === "登录") {
+      config.title = "注册";
+    } else {
+      config.title = "登录";
+    }
+  },
+  //返回
+  back: () => {
+    proxy.$emit("update:signin", false);
+  },
+});
+
+//保存输入数据
+var data = reactive({
+  username: "",
+  password: "",
+});
+
+onMounted(() => {});
 </script>
 
 <style lang='scss' scoped>
+$input_border_radius: 10px;
+
 .signin {
   position: relative;
   display: flex;
@@ -26,9 +67,29 @@
   align-items: center;
   @include fill_color("fill2");
 
+  > .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: $fontSize7;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition-duration: 400ms;
+    background-color: #cdcdcd;
+    box-sizing: border-box;
+    padding: 10px 40px;
+    border-right: 8px solid #cdcdcd;
+
+    &:hover {
+      padding: 10px 60px;
+      border-right: 8px solid #ff3300;
+      background-color: #d9d9d9;
+    }
+  }
+
   > .box {
     position: absolute;
-    top: calc(50vh - 220px);
+    top: calc(50vh - 200px);
     left: calc(50vw - 300px);
     width: 350px;
     height: 350px;
@@ -37,13 +98,11 @@
       inset -20px -20px 25px rgba(255, 255, 255, 0.9);
     transition: 0.5s;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 67% 33% 61% 39% / 42% 62% 38% 58%;
-
-    &:hover {
-      border-radius: 50%;
-    }
+    animation: flow 10s infinite linear;
 
     &::before {
       content: "";
@@ -68,11 +127,70 @@
       background-color: #ffffff;
       opacity: 0.9;
     }
+
+    > .title {
+      font-size: $fontSize13;
+      @include font_color("font1");
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin: 10px 0;
+    }
+
+    > input {
+      width: 220px;
+      display: block;
+      border-radius: $input_border_radius;
+      outline: none;
+      border: 1px solid;
+      @include border_color("border1");
+      @include fill_color("fill6");
+      font-size: $fontSize8;
+      margin: 5px 0;
+      box-sizing: border-box;
+      padding: 4px 14px;
+      box-shadow: inset 2px 4px 2px rgba(0, 0, 0, 0.05),
+        2px 4px 2px rgba(0, 0, 0, 0.05), 4px 5px 5px rgba(0, 0, 0, 0.05),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.9);
+    }
+
+    > .btn {
+      position: relative;
+      display: block;
+      border-radius: $input_border_radius;
+      border: 1px solid;
+      @include border_color("border1");
+      color: #efefef;
+      background-color: #fd125e;
+      box-sizing: border-box;
+      letter-spacing: 3px;
+      padding: 10px 40px 6px 40px;
+      font-size: $fontSize7;
+      margin: 5px 0;
+      box-shadow: inset 2px 4px 2px rgba(214, 47, 47, 0.05),
+        2px 4px 2px rgba(149, 68, 110, 0.05), 4px 5px 5px rgba(0, 0, 0, 0.05),
+        inset -2px -2px 4px rgba(234, 218, 218, 0.9);
+      transition-duration: 300ms;
+
+      &::before {
+        content: "";
+        background-color: #efefef;
+        width: 80%;
+        height: 2px;
+        box-shadow: 0 0 3px 2px white;
+        position: absolute;
+        top: 4px;
+        left: 10%;
+      }
+
+      &:hover {
+        padding: 10px 54px 6px 54px;
+      }
+    }
   }
 
   > .switch {
     position: absolute;
-    top: calc(50vh - 220px);
+    top: calc(50vh - 200px);
     left: calc(50vw + 100px);
     width: 160px;
     height: 160px;
@@ -89,10 +207,12 @@
     color: #707070;
     font-weight: 600;
     letter-spacing: 3px;
+    opacity: 0.5;
 
     &:hover {
       border-radius: 50%;
       color: #000000;
+      opacity: 1;
     }
   }
 
@@ -100,8 +220,8 @@
     position: absolute;
     top: calc(50vh);
     left: calc(50vw + 110px);
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
     background-color: rgb(198, 29, 255);
     box-shadow: inset 10px 10px 10px rgba(0, 0, 0, 0.05),
       15px 25px 10px rgba(0, 0, 0, 0.05), 15px 20px 20px rgba(0, 0, 0, 0.05),
@@ -110,16 +230,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 82% 18% 38% 62% / 40% 49% 51% 60%;
-    font-size: $fontSize6;
+    border-radius: 64% 36% 62% 38% / 43% 31% 69% 57%;
+    font-size: $fontSize4;
     color: #dedede;
     font-weight: 600;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
+    opacity: 0.5;
 
     &:hover {
       border-radius: 50%;
       color: #ffffff;
+      opacity: 1;
     }
+  }
+}
+
+@keyframes flow {
+  0% {
+    border-radius: 67% 33% 61% 39% / 42% 62% 38% 58%;
+  }
+  20% {
+    border-radius: 47% 53% 63% 37% / 49% 30% 70% 51%;
+  }
+  40% {
+    border-radius: 74% 26% 79% 21% / 41% 57% 43% 59%;
+  }
+  60% {
+    border-radius: 53% 47% 68% 32% / 51% 26% 74% 49%;
+  }
+  80% {
+    border-radius: 47% 53% 46% 54% / 22% 65% 35% 78%;
+  }
+  100% {
+    border-radius: 67% 33% 61% 39% / 42% 62% 38% 58%;
   }
 }
 </style>
