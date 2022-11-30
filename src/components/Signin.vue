@@ -8,9 +8,31 @@
     </div>
     <div class="box">
       <div class="title unselectable">{{config.title}}</div>
-      <input type="text">
-      <input type="text">
-      <div class="btn pointer unselectable">开始</div>
+      <input
+        type="text"
+        placeholder="用户名"
+      >
+      <el-upload
+        ref="selectPasswordImage"
+        class="selectPasswordImage"
+        :limit="1"
+        :auto-upload="false"
+        :show-file-list="false"
+        :on-change="data.onchange"
+      >
+        <template #trigger>
+          <div class="
+            btn
+            pointer
+            unselectable">{{data.passwordImage ? "已选择" : "密码图像"}}
+          </div>
+        </template>
+      </el-upload>
+      <div class="
+        btn 
+        pointer
+        unselectable">开始
+      </div>
     </div>
     <div
       class="switch pointer unselectable"
@@ -41,6 +63,7 @@ var config = reactive({
       config.title = "登录";
     }
   },
+
   //返回
   back: () => {
     proxy.$emit("update:signin", false);
@@ -49,8 +72,14 @@ var config = reactive({
 
 //保存输入数据
 var data = reactive({
-  username: "",
-  password: "",
+  username: "", //存放用户名
+  passwordImage: null, // 存放图片
+  //选择图片时
+  onchange: (file) => {
+    proxy.$refs.selectPasswordImage.clearFiles();
+    console.log(file);
+    data.passwordImage = file.raw;
+  },
 });
 
 onMounted(() => {});
@@ -58,6 +87,40 @@ onMounted(() => {});
 
 <style lang='scss' scoped>
 $input_border_radius: 10px;
+
+@mixin btn() {
+  position: relative;
+  display: block;
+  border-radius: $input_border_radius;
+  border: 1px solid;
+  @include border_color("border1");
+  color: #efefef;
+  background-color: #fd125e;
+  box-sizing: border-box;
+  letter-spacing: 3px;
+  padding: 10px 40px 6px 40px;
+  font-size: $fontSize7;
+  margin: 5px 0;
+  box-shadow: inset 2px 4px 2px rgba(214, 47, 47, 0.05),
+    2px 4px 2px rgba(149, 68, 110, 0.05), 4px 5px 5px rgba(0, 0, 0, 0.05),
+    inset -2px -2px 4px rgba(234, 218, 218, 0.9);
+  transition-duration: 300ms;
+
+  &::before {
+    content: "";
+    background-color: #efefef;
+    width: 80%;
+    height: 2px;
+    box-shadow: 0 0 3px 2px white;
+    position: absolute;
+    top: 4px;
+    left: 10%;
+  }
+
+  &:hover {
+    padding: 10px 54px 6px 54px;
+  }
+}
 
 .signin {
   position: relative;
@@ -143,7 +206,7 @@ $input_border_radius: 10px;
       outline: none;
       border: 1px solid;
       @include border_color("border1");
-      @include fill_color("fill6");
+      background-color: #f2f2f2;
       font-size: $fontSize8;
       margin: 5px 0;
       box-sizing: border-box;
@@ -154,36 +217,38 @@ $input_border_radius: 10px;
     }
 
     > .btn {
-      position: relative;
-      display: block;
-      border-radius: $input_border_radius;
-      border: 1px solid;
-      @include border_color("border1");
-      color: #efefef;
-      background-color: #fd125e;
-      box-sizing: border-box;
-      letter-spacing: 3px;
-      padding: 10px 40px 6px 40px;
-      font-size: $fontSize7;
-      margin: 5px 0;
-      box-shadow: inset 2px 4px 2px rgba(214, 47, 47, 0.05),
-        2px 4px 2px rgba(149, 68, 110, 0.05), 4px 5px 5px rgba(0, 0, 0, 0.05),
-        inset -2px -2px 4px rgba(234, 218, 218, 0.9);
-      transition-duration: 300ms;
+      @include btn();
+    }
 
-      &::before {
-        content: "";
-        background-color: #efefef;
-        width: 80%;
-        height: 2px;
-        box-shadow: 0 0 3px 2px white;
-        position: absolute;
-        top: 4px;
-        left: 10%;
-      }
+    > .selectPasswordImage {
+      .btn {
+        @include btn();
+        width: 220px;
+        background-color: #f2f2f2;
+        text-align: center;
+        color: black;
 
-      &:hover {
-        padding: 10px 54px 6px 54px;
+        &::before {
+          content: "";
+          background-color: #cdcdcd;
+          width: 80%;
+          height: 2px;
+          box-shadow: 0 0 2px 1px #cdcdcd;
+          position: absolute;
+          top: 4px;
+          left: 10%;
+          transition-duration: 300ms;
+        }
+
+        &:hover {
+          background-color: #00ccff;
+          color: white;
+        }
+
+        &:hover::before {
+          background-color: #fefefe;
+          box-shadow: 0 0 2px 1px #fefefe;
+        }
       }
     }
   }

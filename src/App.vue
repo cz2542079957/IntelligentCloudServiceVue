@@ -1,33 +1,38 @@
 <template>
   <div>
-    <template v-if="!config.signin">
-      <div :class="'main ' + (config.page == 1 ? 'start' : '')">
-        <div class="welcome">
-          <ThreeJsBCG class="bcg"></ThreeJsBCG>
-          <div class="layer unselectable">
-            <div class="title">智能云服务</div>
+    <transition enter-active-class="animate__animated animate__fadeIn">
+      <div v-if="!config.signin">
+        <Nav v-model:signin="config.signin"></Nav>
+        <div :class="'main ' + (config.page == 1 ? 'start' : '')">
+          <div class="welcome">
+            <ThreeJsBCG class="bcg"></ThreeJsBCG>
+            <div class="layer unselectable">
+              <div class="title">智能云服务</div>
+            </div>
+            <div class="filter"></div>
+            <div
+              class="more pointer unselectable"
+              @click="start"
+            >
+              开始
+              <el-icon>
+                <ArrowDown />
+              </el-icon>
+            </div>
           </div>
-          <div class="filter"></div>
-          <div
-            class="more pointer unselectable"
-            @click="start"
-          >
-            开始
-            <el-icon>
-              <ArrowDown />
-            </el-icon>
+          <div class="content">
+            <Content v-model:page="config.page"></Content>
           </div>
-        </div>
-        <div class="content">
-          <Content v-model:page="config.page"></Content>
         </div>
       </div>
-    </template>
-    <template v-else>
-      <transition enter-active-class="animate__animated animate__fadeInUp">
-        <Signin v-model:signin="config.signin"></Signin>
-      </transition>
-    </template>
+    </transition>
+    <transition enter-active-class="animate__animated animate__fadeIn">
+      <Signin
+        v-show="config.signin"
+        v-model:signin="config.signin"
+      >
+      </Signin>
+    </transition>
   </div>
 </template>
 
@@ -36,6 +41,7 @@ import { getCurrentInstance, onMounted, reactive } from "vue";
 import ThreeJsBCG from "./components/ThreeJsBCG.vue";
 import Content from "./pages/Content.vue";
 import Signin from "./components/Signin.vue";
+import Nav from "./components/Nav.vue";
 import { useThemeSwitchStore } from "./pinia/themeSwitch";
 const themeSwitch = useThemeSwitchStore();
 const { proxy } = getCurrentInstance() as any;

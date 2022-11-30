@@ -19,7 +19,7 @@
           关于
         </div>
         <img
-          src="../assets/imgs/introduce.svg"
+          src="../assets/image/type/introduce.svg"
           style="padding: 20px; box-shadow: none;"
         >
         <div class="filter"></div>
@@ -33,12 +33,11 @@
           简单数字识别
         </div>
         <img
-          src="../assets/imgs/mnist.png"
+          src="../assets/image/type/mnist.png"
           alt=""
         >
         <div class="filter"></div>
       </router-link>
-
       <router-link
         to="/MNIST"
         class="box pointer unselectable"
@@ -48,7 +47,7 @@
           简单图片识别
         </div>
         <img
-          src="../assets/imgs/cifar.png"
+          src="../assets/image/type/cifar.png"
           alt=""
         >
         <div class="filter"></div>
@@ -62,7 +61,7 @@
           目标检测
         </div>
         <img
-          src="../assets/imgs/mbjc.png"
+          src="../assets/image/type/mbjc.png"
           alt=""
         >
         <div class="filter"></div>
@@ -77,7 +76,7 @@
           语义分割
         </div>
         <img
-          src="../assets/imgs/yuyifenge.png"
+          src="../assets/image/type/yuyifenge.png"
           alt=""
         >
         <div class="filter"></div>
@@ -92,7 +91,7 @@
           实例分割
         </div>
         <img
-          src="../assets/imgs/slfg.png"
+          src="../assets/image/type/slfg.png"
           alt=""
         >
         <div class="filter"></div>
@@ -107,7 +106,7 @@
           全景分割
         </div>
         <img
-          src="../assets/imgs/qjfg.png"
+          src="../assets/image/type/qjfg.png"
           alt=""
         >
         <div class="filter"></div>
@@ -122,7 +121,7 @@
           物体检测
         </div>
         <img
-          src="../assets/imgs/yuyifenge.png"
+          src="../assets/image/type/yuyifenge.png"
           alt=""
         >
         <div class="filter"></div>
@@ -137,7 +136,7 @@
           物体检测
         </div>
         <img
-          src="../assets/imgs/yuyifenge.png"
+          src="../assets/image/type/yuyifenge.png"
           alt=""
         >
         <div class="filter"></div>
@@ -149,6 +148,7 @@
 
 <script lang='ts' setup>
 import { getCurrentInstance, onMounted, reactive } from "vue";
+import Nav from "../components/Nav.vue";
 const { proxy } = getCurrentInstance();
 const props = defineProps(["page"]);
 const emits = defineEmits(["update:page"]);
@@ -192,21 +192,25 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
     overflow-x: scroll;
     overflow-y: hidden;
     align-items: center;
+    transform: scaleY(-1);
 
-    &::-webkit-scrollbar {
-      height: 6px;
+    &:hover {
+      height: calc($bottom_height + 14px);
     }
 
     &:hover::-webkit-scrollbar {
-      height: 18px;
+      height: 10px;
     }
 
-    // 定义滑块颜色、内阴影及圆角
+    &::-webkit-scrollbar {
+      height: 0px;
+    }
+
     &::-webkit-scrollbar-thumb {
       border-radius: 8px;
       @include fill_color("fill12");
     }
-    //滑动槽的背景颜色
+
     &::-webkit-scrollbar-track-piece {
       @include fill_color("fill51");
     }
@@ -226,9 +230,10 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
       @include fill_color("fill1");
       flex-grow: 0;
       flex-shrink: 0;
+      transform: scaleY(-1);
 
       &:hover > img {
-        filter: blur(0); 
+        filter: blur(0);
       }
 
       &:hover > .filter {
