@@ -7,7 +7,11 @@
       主页
     </div>
     <div class="view">
-      <router-view></router-view>
+      <router-view v-slot="{Component}">
+        <transition enter-active-class="animate__animated animate__fadeInUp">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
     <div class="bottom">
       <router-link
@@ -176,6 +180,23 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
 
   > .backToHome {
     position: absolute;
+    top: 0;
+    left: 0;
+    font-size: $fontSize7;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition-duration: 400ms;
+    background-color: #cdcdcd;
+    box-sizing: border-box;
+    padding: 10px 40px;
+    border-right: 8px solid #cdcdcd;
+    z-index: 10;
+
+    &:hover {
+      padding: 10px 60px;
+      border-right: 8px solid #ff3300;
+      background-color: #d9d9d9;
+    }
   }
 
   > .view {
@@ -231,6 +252,7 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
       flex-grow: 0;
       flex-shrink: 0;
       transform: scaleY(-1);
+      transition-duration: 240ms;
 
       &:hover > img {
         filter: blur(0);
@@ -242,6 +264,7 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
 
       &:hover {
         @include fill_color("fill13");
+        transform: scale(1.05, -1.05);
       }
 
       > .filter {

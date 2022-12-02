@@ -7,10 +7,14 @@
       返回
     </div>
     <div class="box">
-      <div class="title unselectable">{{config.title}}</div>
+      <div :class="(config.titleIdx == 0 ? 'signinTitle' : 'signupTitle') + ' unselectable'">
+        <div class="title">{{config.title[0]}}</div>
+        <div class="title">{{config.title[1]}}</div>
+      </div>
       <input
         type="text"
         placeholder="用户名"
+        maxlength="24"
       >
       <el-upload
         ref="selectPasswordImage"
@@ -38,7 +42,7 @@
       class="switch pointer unselectable"
       @click="config.switch"
     >
-      {{config.title === "登录" ? "注册" : "登录"}}
+      {{config.title[config.titleIdx == 0 ? 1 : 0 ]}}
     </div>
     <div class="forget pointer unselectable">
       忘记密码
@@ -54,16 +58,16 @@ const props = defineProps(["signin"]);
 const emit = defineEmits(["update:signin"]);
 
 var config = reactive({
-  title: "登录",
+  title: ["登录", "注册"],
+  titleIdx: 0,
   //登录 or 注册
   switch: () => {
-    if (config.title === "登录") {
-      config.title = "注册";
+    if (config.titleIdx === 0) {
+      config.titleIdx = 1;
     } else {
-      config.title = "登录";
+      config.titleIdx = 0;
     }
   },
-
   //返回
   back: () => {
     proxy.$emit("update:signin", false);
@@ -79,6 +83,26 @@ var data = reactive({
     proxy.$refs.selectPasswordImage.clearFiles();
     console.log(file);
     data.passwordImage = file.raw;
+    // 发送请求
+    let formdata = new FormData();
+    formdata.append("file", file.raw);
+    formdata.append("username", data.username);
+    proxy
+      .$post({
+        url: "ics/auth/signup",
+        data: formdata,
+        config: {
+          headers: {
+            ContentType: 1,
+          },
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 });
 
@@ -191,12 +215,39 @@ $input_border_radius: 10px;
       opacity: 0.9;
     }
 
-    > .title {
+    > .signinTitle {
+      position: relative;
       font-size: $fontSize13;
       @include font_color("font1");
       font-weight: 600;
       letter-spacing: 2px;
       margin: 10px 0;
+      height: 40px;
+      overflow: hidden;
+
+      > .title {
+        height: 40px;
+        line-height: 40px;
+        transition-duration: 200ms;
+      }
+    }
+
+    > .signupTitle {
+      position: relative;
+      font-size: $fontSize13;
+      @include font_color("font1");
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin: 10px 0;
+      height: 40px;
+      overflow: hidden;
+
+      > .title {
+        height: 40px;
+        line-height: 40px;
+        transition-duration: 200ms;
+        transform: translateY(-40px);
+      }
     }
 
     > input {

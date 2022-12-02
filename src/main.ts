@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import router from "./router";
-import axios from "axios";
+import install from "./utils/axios";
 import { createPinia } from "pinia";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
@@ -14,7 +14,7 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 
-app.config.globalProperties.$axios = axios;
+install(app);
 
 // 挂载element
 app.use(ElementPlus);

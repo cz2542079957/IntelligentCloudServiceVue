@@ -129,6 +129,9 @@ body,
       position: absolute;
       z-index: 10;
       bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       font-size: $fontSize6;
       @include font_color("font3");
       transition-duration: 200ms;
@@ -144,8 +147,8 @@ body,
       position: absolute;
       bottom: 0;
       left: 0;
-      @include linear_gradient(to top, "fill11", "fill16");
-      @include box_shadow(0, 0, 14px, 4px, "fill16");
+      @include linear_gradient(to top, "fill12", "fill16");
+      @include box_shadow(0, 0, 20px, 10px, "fill16");
       opacity: 0;
       z-index: 10;
       transition-duration: 360ms;
