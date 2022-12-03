@@ -40,7 +40,7 @@
         unselectable"
         @click="functions.proxy()"
       >
-        {{(config.wait ? ("等待" + config.waitTime + "s") : "开始")}}
+        {{(config.wait ? ("请稍等" + config.waitTime + "s") : "开始")}}
       </div>
     </div>
     <div
@@ -158,7 +158,7 @@ var functions = reactive({
           userData.saveToken(data.data.token); //保存token
           proxy.$emit("update:signin", false);
         }
-        getUtils().stateCodeHandler(data?.code, data?.msg);
+        getUtils().stateCodeHandler(data);
       });
   },
   //注册
@@ -200,7 +200,7 @@ var functions = reactive({
           userData.saveToken(data.data.token); //保存token
           proxy.$emit("update:signin", false);
         }
-        getUtils().stateCodeHandler(data?.code, data?.msg);
+        getUtils().stateCodeHandler(data);
       });
   },
   //检查参数

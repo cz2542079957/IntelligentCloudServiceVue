@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 主窗口 -->
     <transition enter-active-class="animate__animated animate__fadeIn">
       <div v-if="!config.signin">
         <Nav v-model:signin="config.signin"></Nav>
@@ -8,6 +9,28 @@
           <div class="welcome">
             <!-- 背景 -->
             <ThreeJsBCG class="bcg"></ThreeJsBCG>
+            <!-- 文字 -->
+            <div class="layer unselectable">
+              <div class="title">智能云服务</div>
+              <div
+                class="text"
+                style="transition-delay: 100ms"
+              >
+                机器学习
+              </div>
+              <div
+                class="text"
+                style="transition-delay: 200ms"
+              >
+                为您提供深度学习经典案例
+              </div>
+              <div
+                class="text"
+                style="transition-delay: 300ms"
+              >
+                详细说明文档帮助您实现案例
+              </div>
+            </div>
             <!-- 弹幕 -->
             <div
               class="bulletScreen"
@@ -22,7 +45,6 @@
               </div>
             </div>
             <!-- 弹幕列表 -->
-
             <transition
               enter-active-class="animate__animated animate__fadeInLeft"
               leave-active-class="animate__animated animate__fadeOutLeft"
@@ -58,35 +80,13 @@
                   maxlength="50"
                   v-model="bulletScreen.tempData"
                   @keypress.enter="bulletScreen.send"
+                  :placeholder="'已装填' + bulletScreen.config.count + '条弹幕'"
                 ></div>
               <div
                 class="btn pointer"
                 @click="bulletScreen.send"
               >
                 发射
-              </div>
-            </div>
-
-            <!-- 文字 -->
-            <div class="layer unselectable">
-              <div class="title">智能云服务</div>
-              <div
-                class="text"
-                style="transition-delay: 100ms"
-              >
-                机器学习
-              </div>
-              <div
-                class="text"
-                style="transition-delay: 200ms"
-              >
-                为您提供深度学习经典案例
-              </div>
-              <div
-                class="text"
-                style="transition-delay: 300ms"
-              >
-                详细说明文档帮助您实现案例
               </div>
             </div>
             <!-- 下方遮罩 -->
@@ -109,6 +109,7 @@
         </div>
       </div>
     </transition>
+    <!-- 登录窗口 -->
     <transition enter-active-class="animate__animated animate__fadeIn">
       <Signin
         v-show="config.signin"
@@ -129,17 +130,18 @@ import { useThemeSwitchStore } from "./pinia/themeSwitch";
 import { AuthBuffer } from "./utils/buffer";
 import { useUserDataStore } from "./pinia/userData";
 import getUtils from "./utils/registrationCenter";
+import { buffer } from "stream/consumers";
 const themeSwitch = useThemeSwitchStore();
 const userData = useUserDataStore();
 const { proxy } = getCurrentInstance() as any;
 
 var config = reactive({
-  page: 0,
-  signin: false,
+  page: 0, //当前页面
+  signin: false, //是否进入登录页
   init: () => {
-    themeSwitch.init();
-    config.autoLogin();
-    bulletScreen.start();
+    themeSwitch.init(); //初始化主题
+    config.autoLogin(); //自动登录
+    bulletScreen.start(); //初始化弹幕
   },
   autoLogin: () => {
     //尝试从session恢复登录状态
@@ -161,12 +163,13 @@ var config = reactive({
           data: { username },
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           let data = res.data;
           if (data?.code == 0) {
             userData.signin(null, username);
+            console.log("自动登录成功");
           }
-          console.log("自动登录成功");
+          getUtils().stateCodeHandler(data);
         });
     }
 
@@ -176,21 +179,25 @@ var config = reactive({
 });
 
 var bulletScreen = reactive({
+  config: {
+    timePushToActive: 8, //每40帧显示一个弹幕
+    minLengthToPullData: 10, //当缓存区最低多少数据时要向后端请求
+    count: 0, // 弹幕数据库总数
+    page: 1, //弹幕页
+    limit: 80, //单页弹幕数
+  },
   show: true, // 显示弹幕
-  showList: true, //显示弹幕列表
+  showList: false, //显示弹幕列表
   tempData: "", // 我的弹幕
-  bufferedData: [
-    { text: "哈哈哈", process: 0, height: 1, size: 12 },
-    { text: "陈朕 hello world hello worldhello worldhello world" },
-    { text: "陈朕 hello world hello worldhello worldhello world" },
-  ], // 缓存的弹幕
+  bufferedData: [], // 缓存的弹幕
   activeData: [], // 正在显示
-  showedData: [], // 已经显示结束的弹幕
+  // showedData: [], // 已经显示结束的弹幕
   timer: null, // 定时器
   keyFrame: 0,
+  lastPullDataKeyFrame: -0xffffff, //最后一次拉取数据时间，防止频繁
   //数据库获取
   start: () => {
-    bulletScreen.pullData();
+    // bulletScreen.pullData();
     bulletScreen.run();
   },
   //拉取数据
@@ -198,10 +205,21 @@ var bulletScreen = reactive({
     getUtils()
       .$get({
         url: "ics/bulletScreen/list",
-        config: { params: { page: 1, limit: 20 } },
+        config: {
+          params: {
+            page: bulletScreen.config.page,
+            limit: bulletScreen.config.limit,
+          },
+        },
       })
       .then((res) => {
-        console.log(res);
+        let data = res.data;
+        if (data?.code == 0) {
+          // console.log(data);
+          bulletScreen.config.count = data.count;
+          bulletScreen.bufferedData.unshift(...data.data);
+        }
+        getUtils().stateCodeHandler(data);
       });
   },
   //running
@@ -211,7 +229,10 @@ var bulletScreen = reactive({
     that.timer = setTimeout(() => {
       that.keyFrame += 1;
       //从缓存区装载弹幕
-      if (that.keyFrame % 60 == 0 && that.bufferedData.length != 0) {
+      if (
+        that.keyFrame % bulletScreen.config.timePushToActive == 0 &&
+        that.bufferedData.length != 0
+      ) {
         let item = that.bufferedData.pop();
         let process = -item.text.length;
         let size = Math.random() * 8 + 14;
@@ -229,6 +250,25 @@ var bulletScreen = reactive({
         clearTimeout(that.timer);
         return;
       }
+      //如果缓存弹幕不够则请求后端
+      if (
+        bulletScreen.bufferedData.length <
+        bulletScreen.config.minLengthToPullData
+      ) {
+        if (
+          bulletScreen.keyFrame - bulletScreen.lastPullDataKeyFrame >
+          bulletScreen.config.timePushToActive * 3
+        ) {
+          bulletScreen.config.page++;
+          bulletScreen.lastPullDataKeyFrame = bulletScreen.keyFrame;
+          if (
+            (bulletScreen.config.page - 1) * bulletScreen.config.limit >
+            bulletScreen.config.count
+          )
+            bulletScreen.config.page = 1;
+          bulletScreen.pullData();
+        }
+      }
       //递归
       that.run();
     }, 20);
@@ -239,7 +279,7 @@ var bulletScreen = reactive({
       bulletScreen.activeData[i].process += 0.2;
       if (bulletScreen.activeData[i].process > 150) {
         let item = bulletScreen.activeData.splice(i, 1); //从展示区取出
-        bulletScreen.showedData.push(item); //放入以展示区
+        // bulletScreen.showedData.push(item);
       }
     }
   },
@@ -340,6 +380,45 @@ body,
       height: 100vh;
     }
 
+    > .layer {
+      position: absolute;
+      z-index: 20;
+      box-sizing: border-box;
+      padding-top: 100px;
+      padding-bottom: 100px;
+      top: 16vh;
+      @include font_color("font3");
+
+      &:hover .title {
+        @include font_color("font1");
+      }
+
+      &:hover .text {
+        @include font_color("fill31");
+      }
+
+      &:hover + .bulletScreen {
+        @include font_color("font5");
+      }
+
+      > .title {
+        text-align: center;
+        font-weight: 600;
+        letter-spacing: 6px;
+        font-size: $fontSize15;
+        transition-duration: 260ms;
+        margin: 10px 0;
+      }
+
+      > .text {
+        letter-spacing: 2px;
+        font-size: $fontSize7;
+        text-align: center;
+        @include font_color("font4");
+        transition-duration: 200ms;
+      }
+    }
+
     > .bulletScreen {
       top: 0;
       left: 0;
@@ -347,14 +426,15 @@ body,
       height: 100%;
       position: absolute;
       z-index: 10;
+      @include font_color("font2");
       overflow: hidden;
 
       > .text {
         width: max-content;
         overflow: hidden;
         position: absolute;
-        font-size: $fontSize10;
         z-index: inherit;
+        transition: color 400ms;
       }
     }
 
@@ -368,6 +448,10 @@ body,
       font-size: $fontSize3;
       border-radius: 16px;
       @include box_shadow(0, 0, 3px, 2px, "border1");
+
+      &:hover > .input {
+        width: 400px;
+      }
 
       > .btn {
         box-sizing: border-box;
@@ -402,7 +486,8 @@ body,
         height: inherit;
         line-height: inherit;
         display: block;
-        width: 200px;
+        width: 260px;
+        transition: width 200ms;
 
         > input {
           margin: 0;
@@ -476,41 +561,6 @@ body,
           @include fill_color("fill12");
           @include font_color("font1");
         }
-      }
-    }
-
-    > .layer {
-      position: absolute;
-      z-index: 10;
-      box-sizing: border-box;
-      padding-top: 100px;
-      padding-bottom: 100px;
-      top: 16vh;
-      @include font_color("font3");
-
-      &:hover .title {
-        @include font_color("font1");
-      }
-
-      &:hover .text {
-        @include font_color("fill31");
-      }
-
-      > .title {
-        text-align: center;
-        font-weight: 600;
-        letter-spacing: 6px;
-        font-size: $fontSize15;
-        transition-duration: 260ms;
-        margin: 10px 0;
-      }
-
-      > .text {
-        letter-spacing: 2px;
-        font-size: $fontSize7;
-        text-align: center;
-        @include font_color("font4");
-        transition-duration: 200ms;
       }
     }
 

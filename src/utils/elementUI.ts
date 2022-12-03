@@ -30,7 +30,9 @@ type elNotificationParams = {
 	offset?: number;
 };
 
-export function stateCodeHandler(code: string, msg: string) {
+export function stateCodeHandler(data: any) {
+	let code = data?.code ?? null;
+	let msg = data?.msg ?? null;
 	if (!msg) {
 		if (!code) {
 			elMessage({ message: "未知错误！", type: "error" });
@@ -45,7 +47,7 @@ export function stateCodeHandler(code: string, msg: string) {
 		return;
 	}
 	let message = msg.split("\\")[0];
-	let type = msg.split("\\")[1] as types; 
+	let type = msg.split("\\")[1] as types;
 	elMessage({ message, type });
 }
 
