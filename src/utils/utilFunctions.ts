@@ -1,6 +1,3 @@
-
-
-
 export class DefaultHeadImage {
 	public static images = [
 		new URL("../assets/image/defaultHeadImage/0.svg", import.meta.url)
@@ -34,6 +31,7 @@ export class DefaultHeadImage {
 	];
 
 	public static show(username: string) {
+		username == username ?? "";
 		let index = username.length % 12;
 		return this.images[index];
 	}

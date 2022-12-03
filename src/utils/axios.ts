@@ -1,11 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { App } from "vue";
+import { AuthBuffer } from "./buffer";
 
 //请求拦截器
 axios.interceptors.request.use(
 	//发送请求前
 	(config: AxiosRequestConfig): AxiosRequestConfig => {
-		config.headers.Authorization = "";
+		config.headers.token = AuthBuffer.getToken();
 		return config;
 	},
 	//发送请求出错
@@ -72,58 +72,46 @@ type deleteOpt = {
 	};
 };
 
-function _get(opt: getOpt) {
-	let url = baseUrl[opt.config.server ?? 0] + opt.url ?? "";
+export function $get(opt: getOpt) {
+	let url = baseUrl[opt.config?.server ?? 0] + opt.url ?? "";
 	return axios.get(url, {
 		params: opt.config?.params ?? null,
 		headers: {
 			"Content-Type":
-				header.ContentType[opt.config.headers?.ContentType ?? 0],
+				header.ContentType[opt.config?.headers?.ContentType ?? 0],
 		},
 	});
 }
 
-function _post(opt: postOpt) {
-	let url = baseUrl[opt.config.server ?? 0] + opt.url ?? "";
+export function $post(opt: postOpt) {
+	let url = baseUrl[opt.config?.server ?? 0] + opt.url ?? "";
 	return axios.post(url, opt.data ?? null, {
 		params: opt.config?.params ?? null,
 		headers: {
 			"Content-Type":
-				header.ContentType[opt.config.headers?.ContentType ?? 0],
+				header.ContentType[opt.config?.headers?.ContentType ?? 0],
 		},
 	});
 }
 
-function _put(opt: putOpt) {
-	let url = baseUrl[opt.config.server ?? 0] + opt.url ?? "";
+export function $put(opt: putOpt) {
+	let url = baseUrl[opt.config?.server ?? 0] + opt.url ?? "";
 	return axios.put(url, opt.data ?? null, {
 		params: opt.config?.params ?? null,
 		headers: {
 			"Content-Type":
-				header.ContentType[opt.config.headers?.ContentType ?? 0],
+				header.ContentType[opt.config?.headers?.ContentType ?? 0],
 		},
 	});
 }
 
-function _delete(opt: deleteOpt) {
-	let url = baseUrl[opt.config.server ?? 0] + opt.url ?? "";
+export function $delete(opt: deleteOpt) {
+	let url = baseUrl[opt.config?.server ?? 0] + opt.url ?? "";
 	return axios.delete(url, {
 		params: opt.config?.params ?? null,
 		headers: {
 			"Content-Type":
-				header.ContentType[opt.config.headers?.ContentType ?? 0],
+				header.ContentType[opt.config?.headers?.ContentType ?? 0],
 		},
 	});
-}
-
-//安装配置axios封装函数
-export default function install(app: App<Element>) {
-	//安装get
-	app.config.globalProperties.$get = _get;
-	//安装post
-	app.config.globalProperties.$post = _post;
-	//安装put
-	app.config.globalProperties.$put = _put;
-	//安装delete
-	app.config.globalProperties.$delete = _delete;
 }

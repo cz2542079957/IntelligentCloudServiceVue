@@ -12,6 +12,7 @@
         <div class="title">{{config.title[1]}}</div>
       </div>
       <input
+        v-model="inputData.username"
         type="text"
         placeholder="用户名"
         maxlength="24"
@@ -22,20 +23,24 @@
         :limit="1"
         :auto-upload="false"
         :show-file-list="false"
-        :on-change="data.onchange"
+        :on-change="inputData.onchange"
       >
         <template #trigger>
           <div class="
             btn
             pointer
-            unselectable">{{data.passwordImage ? "已选择" : "密码图像"}}
+            unselectable">{{inputData.passwordImage ? "已选择" : "密码图像"}}
           </div>
         </template>
       </el-upload>
-      <div class="
+      <div
+        class="
         btn 
         pointer
-        unselectable">开始
+        unselectable"
+        @click="functions.proxy()"
+      >
+        {{(config.wait ? ("等待" + config.waitTime + "s") : "开始")}}
       </div>
     </div>
     <div
@@ -52,14 +57,18 @@
 
 <script lang='ts' setup>
 import { getCurrentInstance, onMounted, reactive } from "vue";
+import { useUserDataStore } from "../pinia/userData";
+import getUtils from "../utils/registrationCenter";
 const { proxy } = getCurrentInstance() as any;
-
+const userData = useUserDataStore();
 const props = defineProps(["signin"]);
 const emit = defineEmits(["update:signin"]);
 
 var config = reactive({
   title: ["登录", "注册"],
-  titleIdx: 0,
+  titleIdx: 0, //当前title index
+  wait: false, //是否处在等待状态
+  waitTime: 10, //等待时间
   //登录 or 注册
   switch: () => {
     if (config.titleIdx === 0) {
@@ -72,25 +81,62 @@ var config = reactive({
   back: () => {
     proxy.$emit("update:signin", false);
   },
+  //进入等待状态
+  waitState: () => {
+    config.wait = true;
+    config.waitTime = 10;
+    let t = setInterval(() => {
+      if (config.waitTime > 0) {
+        config.waitTime--;
+      } else {
+        config.wait = false;
+        clearInterval(t);
+      }
+    }, 1000);
+  },
 });
 
 //保存输入数据
-var data = reactive({
+var inputData = reactive({
   username: "", //存放用户名
   passwordImage: null, // 存放图片
   //选择图片时
-  onchange: (file) => {
+  onchange: (file: any) => {
     proxy.$refs.selectPasswordImage.clearFiles();
-    console.log(file);
-    data.passwordImage = file.raw;
-    // 发送请求
-    let formdata = new FormData();
-    formdata.append("file", file.raw);
-    formdata.append("username", data.username);
-    proxy
+    // console.log(file);
+    inputData.passwordImage = file.raw;
+  },
+});
+
+var functions = reactive({
+  proxy: () => {
+    if (config.wait) {
+      getUtils().elMessage({
+        message: "请 " + config.waitTime + " 秒后再操作",
+        type: "warning",
+      });
+      return;
+    }
+    //如果是登录
+    if (config.titleIdx == 0) {
+      functions.signin();
+    } else {
+      functions.signup();
+    }
+    config.waitState();
+  },
+  //登录
+  signin: () => {
+    if (!functions.check()) {
+      return;
+    }
+    let formData = new FormData();
+    formData.append("file", inputData.passwordImage);
+    formData.append("username", inputData.username);
+    getUtils()
       .$post({
-        url: "ics/auth/signup",
-        data: formdata,
+        url: "ics/auth/signin",
+        data: formData,
         config: {
           headers: {
             ContentType: 1,
@@ -98,11 +144,80 @@ var data = reactive({
         },
       })
       .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
+        let data = res.data;
+        if (data?.code == 0) {
+          //注册成功
+          // console.log(data);
+          getUtils().elNotification({
+            title: "欢迎回来",
+            message: "",
+            type: "success",
+            duration: 4500,
+          });
+          userData.signin(null, inputData.username); //保存登录状态
+          userData.saveToken(data.data.token); //保存token
+          proxy.$emit("update:signin", false);
+        }
+        getUtils().stateCodeHandler(data?.code, data?.msg);
       });
+  },
+  //注册
+  signup: () => {
+    if (!functions.check()) {
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("file", inputData.passwordImage);
+    formData.append("username", inputData.username);
+    getUtils()
+      .$post({
+        url: "ics/auth/signup",
+        data: formData,
+        config: {
+          headers: {
+            ContentType: 1,
+          },
+        },
+      })
+      .then((res) => {
+        let data = res.data;
+        if (data?.code == 0) {
+          //注册成功
+          console.log(data);
+          getUtils().elNotification({
+            title: "欢迎！",
+            message: `
+            <span>请记住你的80位图像密码，它能够帮助你修改密码：</span>
+            <br/>
+            <strong>${data.data.password}<strong>
+            `,
+            type: "success",
+            duration: -1,
+            dangerouslyUseHTMLString: true,
+          });
+          userData.signin(data.data.id, inputData.username); //保存登录状态
+          userData.saveToken(data.data.token); //保存token
+          proxy.$emit("update:signin", false);
+        }
+        getUtils().stateCodeHandler(data?.code, data?.msg);
+      });
+  },
+  //检查参数
+  check: () => {
+    if (!inputData.username) {
+      getUtils().elMessage({ message: "请输入用户名!", type: "warning" });
+      return false;
+    }
+    if (!inputData.passwordImage) {
+      getUtils().elMessage({ message: "请选择密码图像!", type: "warning" });
+      return false;
+    }
+    if (inputData.username.length < 3 || inputData.username.length > 24) {
+      getUtils().elMessage({ message: "用户名长度为4~24!", type: "warning" });
+      return false;
+    }
+    return true;
   },
 });
 

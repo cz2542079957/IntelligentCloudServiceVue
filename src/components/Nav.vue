@@ -1,14 +1,14 @@
 <template>
   <div class="nav">
-    <div
-      class="img pointer"
-      @click="goToSignin"
-    >
+    <div class="img pointer">
       <template v-if="!userData.isSignin">
-        <img src="../assets/image/global/signin.svg">
+        <img
+          @click="goToSignin"
+          src="../assets/image/global/signin.svg"
+        >
       </template>
       <template v-else>
-        <img :src="proxy.Utils.DefaultHeadImage.show('chenzhen')">
+        <img :src="getUtils().DefaultHeadImage.show(userData.username)">
       </template>
     </div>
     <div class="username ">
@@ -20,6 +20,7 @@
 <script lang='ts' setup>
 import { getCurrentInstance } from "vue";
 import { useUserDataStore } from "../pinia/userData";
+import getUtils from "../utils/registrationCenter";
 const { proxy } = getCurrentInstance() as any;
 const userData = useUserDataStore();
 const props = defineProps(["signin"]);
