@@ -154,6 +154,7 @@ var config = reactive({
     //尝试通过token登录
     data = AuthBuffer.getUserInfo();
     let token = AuthBuffer.getToken();
+    // console.log(data, token);
     if (token && data) {
       //通过token 登录
       let username = data.username;
@@ -168,13 +169,14 @@ var config = reactive({
           if (data?.code == 0) {
             userData.signin(null, username);
             console.log("自动登录成功");
+            return;
           }
           getUtils().stateCodeHandler(data);
         });
+    } else {
+      //清空登录数据
+      AuthBuffer.clearLoginCredentials();
     }
-
-    //清空登录数据
-    AuthBuffer.clearLoginCredentials();
   },
 });
 
