@@ -17,9 +17,9 @@ type elLoadingParams = {
 	fullscreen?: boolean;
 };
 type elNotificationParams = {
-	title: string | undefined;
-	message: string;
-	type: types;
+	title?: string | undefined;
+	message?: string;
+	type?: types;
 	position?:
 		| "top-right"
 		| "top-left"

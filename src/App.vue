@@ -130,25 +130,25 @@ import { useThemeSwitchStore } from "./pinia/themeSwitch";
 import { AuthBuffer } from "./utils/buffer";
 import { useUserDataStore } from "./pinia/userData";
 import getUtils from "./utils/registrationCenter";
-import { buffer } from "stream/consumers";
 const themeSwitch = useThemeSwitchStore();
 const userData = useUserDataStore();
 const { proxy } = getCurrentInstance() as any;
 
 var config = reactive({
-  page: 0, //当前页面
+  page: 1, //当前页面
   signin: false, //是否进入登录页
   init: () => {
     themeSwitch.init(); //初始化主题
     config.autoLogin(); //自动登录
     bulletScreen.start(); //初始化弹幕
   },
+  //自动登录
   autoLogin: () => {
     //尝试从session恢复登录状态
     let data = AuthBuffer.getSessionUserInfo();
     if (data) {
       //说明数据没缺
-      userData.signin(data.id, data.username);
+      userData.signin(data.username);
       return;
     }
     //尝试通过token登录
@@ -167,7 +167,7 @@ var config = reactive({
           // console.log(res);
           let data = res.data;
           if (data?.code == 0) {
-            userData.signin(null, username);
+            userData.signin(username);
             console.log("自动登录成功");
             return;
           }
@@ -224,7 +224,7 @@ var bulletScreen = reactive({
         getUtils().stateCodeHandler(data);
       });
   },
-  //running
+  //running buffer数据调度，数据拉取策略。
   run: () => {
     let that = bulletScreen;
     clearTimeout(that.timer);
@@ -304,6 +304,22 @@ var bulletScreen = reactive({
       return;
     }
     if (bulletScreen.tempData) {
+      getUtils()
+        .$post({
+          url: "ics/bulletScreen/send",
+          data: { username: userData.username, text: bulletScreen.tempData },
+        })
+        .then((res) => {
+          let data = res.data;
+          if (data?.code == 0) {
+            getUtils().elNotification({
+              title: "弹幕发射成功",
+              type: "success",
+            });
+          }
+          getUtils().stateCodeHandler(data);
+        });
+
       //从顶部插入
       bulletScreen.bufferedData.push({
         text: bulletScreen.tempData,
@@ -315,6 +331,7 @@ var bulletScreen = reactive({
   },
 });
 
+//点击“开始”
 function start() {
   config.page = 1;
   if (bulletScreen.show) {
@@ -327,7 +344,7 @@ function start() {
 }
 
 onMounted(() => {
-  config.init();
+  config.init(); //页面初始化
 });
 </script>
   

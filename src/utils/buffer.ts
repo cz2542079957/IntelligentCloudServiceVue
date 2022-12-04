@@ -1,8 +1,8 @@
 export class AuthBuffer {
 	//保存用户信息
-	public static userInfo(id: number, username: string) {
+	public static userInfo(username: string) {
 		// 生成待保存数据
-		let data = { id, username };
+		let data = { username };
 		localStorage.setItem("userInfo", JSON.stringify(data));
 		sessionStorage.setItem("userInfo", JSON.stringify(data)); //解决刷新候的数据同步
 	}

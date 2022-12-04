@@ -154,7 +154,7 @@ var functions = reactive({
             type: "success",
             duration: 4500,
           });
-          userData.signin(null, inputData.username); //保存登录状态
+          userData.signin(inputData.username); //保存登录状态
           userData.saveToken(data.data.token); //保存token
           proxy.$emit("update:signin", false);
         }
@@ -184,7 +184,7 @@ var functions = reactive({
         let data = res.data;
         if (data?.code == 0) {
           //注册成功
-          console.log(data);
+          // console.log(data);
           getUtils().elNotification({
             title: "欢迎！",
             message: `
@@ -196,7 +196,7 @@ var functions = reactive({
             duration: -1,
             dangerouslyUseHTMLString: true,
           });
-          userData.signin(data.data.id, inputData.username); //保存登录状态
+          userData.signin(inputData.username); //保存登录状态
           userData.saveToken(data.data.token); //保存token
           proxy.$emit("update:signin", false);
         }
