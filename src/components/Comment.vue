@@ -16,6 +16,7 @@
     <div class="content">
       <!-- 评论列表 -->
       <div class="list">
+        <div class="title">{{config.moduleName[comment.config.module]}}</div>
         <div
           class="item"
           v-for="(item, index) in comment.list"
@@ -54,7 +55,7 @@
         >
         <div
           class="
-          send"
+          send pointer"
           @click="comment.send"
         >
           发送
@@ -66,12 +67,23 @@
 
 <script lang='ts' setup>
 import { getCurrentInstance, onMounted, reactive } from "vue";
+import { useUserDataStore } from "../pinia/userData";
 import getUtils from "../utils/registrationCenter";
-
+const userData = useUserDataStore();
 var props = defineProps(["module"]);
 
 var config = reactive({
   show: true,
+  moduleName: [
+    "",
+    "简单数字识别",
+    "简单图片识别",
+    "目标检测",
+    "语义分割",
+    "实例分割",
+    "全景分割",
+    "物体检测",
+  ],
   switch: () => {
     config.show = config.show ? false : true;
   },
@@ -143,8 +155,32 @@ var comment = reactive({
   },
   // 用户发送评论
   send: () => {
-    // 测试
-    console.log(comment.tempData);
+    if (!userData.isSignin) {
+      getUtils().elMessage({ message: "请先登录", type: "warning" });
+      return;
+    }
+    if (!comment.tempData) {
+      getUtils().elMessage({ message: "请输入内容", type: "warning" });
+      return;
+    }
+    let text = comment.tempData;
+    comment.tempData = "";
+    getUtils()
+      .$post({
+        url: "ics/comment/send",
+        data: {
+          username: userData.username,
+          text,
+          module: Number(comment.config.module),
+        },
+      })
+      .then((res) => {
+        let data = res.data;
+        if (data?.code == 0) {
+          getUtils().elNotification({ title: "评论成功", type: "success" });
+        }
+        getUtils().stateCodeHandler(data);
+      });
   },
 });
 
@@ -187,6 +223,8 @@ $commentWriteLineHeight: 40px;
   height: 100%;
   width: 420px;
   transition: width 360ms;
+  border-left: 2px solid;
+  @include border_color("border3");
 
   > .closeComment {
     position: absolute;
@@ -224,6 +262,18 @@ $commentWriteLineHeight: 40px;
       padding: 10px;
       @include scrollbar();
 
+      > .title {
+        width: 100%;
+        text-align: center;
+        font-size: $fontSize7;
+        font-weight: 600;
+        letter-spacing: 2px;
+        border-bottom: 1px solid;
+        box-sizing: border-box;
+        padding: 10px 0;
+        @include border_color("border1");
+      }
+
       > .item {
         width: inherit;
         display: flex;
@@ -247,8 +297,7 @@ $commentWriteLineHeight: 40px;
         }
 
         > .text {
-          width: max-content;
-          min-width: 100%;
+          width: 400px;
           box-sizing: border-box;
           padding: 4px 14px;
           word-wrap: break-word;
@@ -272,7 +321,7 @@ $commentWriteLineHeight: 40px;
         width: fit-content;
         margin: 10px auto;
         height: 30px;
-        font-size: $fontSize5;
+        font-size: $fontSize6;
         @include font_color("font3");
 
         &:hover {
@@ -295,6 +344,8 @@ $commentWriteLineHeight: 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-top: 2px solid;
+      @include border_color("border3");
 
       > input {
         padding: 0;
@@ -332,7 +383,10 @@ $commentWriteLineHeight: 40px;
   width: 0;
 
   > .closeComment {
-    left: -20px;
+    height: 200px;
+    width: 30px;
+    left: -30px;
+    top: calc(50% - 100px);
     @include fill_color("fill53");
 
     > .icon {
