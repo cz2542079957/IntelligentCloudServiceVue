@@ -23,6 +23,13 @@
         >
           <Introduce2 v-show="(config.introduceIdx == 2)"></Introduce2>
         </transition>
+        <transition
+          enter-active-class="animate__animated animate__slideInUp"
+          leave-active-class="animate__animated animate__fadeOutDown"
+        >
+          <Introduce3 v-show="(config.introduceIdx == 3)">
+          </Introduce3>
+        </transition>
       </div>
       <div
         class="button pointer unselectable"
@@ -40,10 +47,11 @@
 import { reactive } from "vue";
 import Introduce1 from "../components/Introduce/Introduce1.vue";
 import Introduce2 from "../components/Introduce/Introduce2.vue";
+import Introduce3 from "../components/Introduce/Introduce3.vue";
 
 var config = reactive({
   introduceIdx: 1,
-  maxIdx: 2,
+  maxIdx: 3,
   // 前进
   advance: () => {
     config.introduceIdx++;

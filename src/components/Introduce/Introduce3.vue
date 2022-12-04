@@ -1,26 +1,25 @@
 <template>
   <div class="content">
-    <div class="id">#1</div>
-    <div class="h">HELLO.</div>
-    <div class="text">很高兴见到你，请允许我做一个简短的介绍，这是一个通过机器学习帮助你完成一些图片处理的网站，
-      你可以看到页面下方有一系列的功能，如果你对机器学习、深度学习有过了解，那么我觉得你一定对这些比较熟悉，
-      比如MNIST数据集的案例，CIFAR10以及CIFAR100的案例等等。
-    </div>
-    <div class="h">页面索引</div>
+    <div class="id">#3</div>
+    <div class="h">Rule : 规则</div>
     <div class="text">
-      你当前处在“关于”页面，翻动子页面（两侧的按钮），让我为你介绍本网站的使用方法，以及注意事项吧。
+      1.我想你已经知道本站主页有弹幕功能了，你可以发表一些你的有趣的想法，或者仅仅留下一个“XXX，到此一游”，但请一定要注意弹幕礼仪。
     </div>
+    <br />
     <div class="text">
-      #1：本页
+      2.本站目前功能一律免费，你只需要登录就可以使用这些功能，请不要作出恶意举动，谢谢。
     </div>
+    <br />
     <div class="text">
-      #2：使用方法介绍
+      3.本站具有评论功能，与弹幕同理，请在文明的前提下畅所欲言。
     </div>
+    <div class="h">More</div>
     <div class="text">
-      #3：注意事项
+      站长联系方式: 2542079957@qq.com，有什么建议或者好的想法请一定要联系我。
     </div>
-    <br>
-    <div class="h">: ) 祝你愉快</div>
+    <br />
+    <div class="h">Wish You Happy</div>
+    <br />
   </div>
 </template>
 

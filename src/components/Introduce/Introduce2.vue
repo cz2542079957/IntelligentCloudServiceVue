@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <div class="id">#2</div>
     <div class="h">Usage : 使用方法</div>
     <div class="text">在下方横向列表中选择一个你感兴趣的功能，点击后会在页面中心出现相关的上传图片的功能以及一些按钮，
       你可以按照按钮的字面意思提交处理任务，不过前提是你得登录到本网站，登录方法见下方。
@@ -36,16 +37,26 @@
   box-sizing: border-box;
   padding: 28px;
 
+  > .id {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: $fontSize9;
+    @include font_color("font4");
+  }
+
   > .h {
     font-size: $fontSize9;
     font-weight: 600;
     padding: 16px 10px 4px 10px;
+    @include font_color("font1");
   }
 
   > .text {
     font-size: $fontSize6;
     padding: 0 20px;
     text-indent: 2em;
+    @include font_color("font2");
   }
 }
 </style>
