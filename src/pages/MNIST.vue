@@ -3,7 +3,14 @@
     <DividePage>
       <template v-slot:left>
         <div class="left">
-          <div class=""></div>
+          <div class="title">
+
+          </div>
+          <div class="image">
+            <img src="">
+
+            <img src="">
+          </div>
         </div>
       </template>
       <template v-slot:right>
@@ -25,8 +32,6 @@
 <script lang='ts' setup>
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
-
-//刷新
 </script>
 
 <style lang='scss' scoped>

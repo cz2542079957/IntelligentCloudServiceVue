@@ -151,7 +151,7 @@
 </template>
 
 <script lang='ts' setup>
-import { getCurrentInstance, onMounted, reactive } from "vue"; 
+import { getCurrentInstance, onMounted, reactive } from "vue";
 const { proxy } = getCurrentInstance();
 const props = defineProps(["page"]);
 const emits = defineEmits(["update:page"]);

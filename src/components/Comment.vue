@@ -16,7 +16,7 @@
     <div class="content">
       <!-- 评论列表 -->
       <div class="list">
-        <div class="title">{{config.moduleName[comment.config.module]}}</div>
+        <div class="title">{{(config.moduleName[comment.config.module] + "(评论)")}}</div>
         <div
           class="item"
           v-for="(item, index) in comment.list"
@@ -263,7 +263,7 @@ $commentWriteLineHeight: 40px;
       @include scrollbar();
 
       > .title {
-        width: 100%;
+        width: max-content;
         text-align: center;
         font-size: $fontSize7;
         font-weight: 600;

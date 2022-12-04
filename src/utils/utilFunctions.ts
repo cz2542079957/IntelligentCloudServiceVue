@@ -1,3 +1,5 @@
+import getUtils from "./registrationCenter";
+
 //时间转换工具包
 export class TimeTools {
 	//时间戳转日期(年月日)
@@ -149,5 +151,36 @@ export class DefaultHeadImage {
 		username == username ?? "";
 		let index = username.length % 12;
 		return this.images[index];
+	}
+}
+
+//文件上传工具
+export class FileUpload {
+	//todo
+
+	//上传题目的图片
+	public static uploadProblemImage(image: Blob) {
+		let file = new FormData();
+		file.append("file", image);
+		return new Promise((resolve, reject) => {
+			getUtils()
+				.$post("api/file/image/", file, 2)
+				.then((res: any) => {
+					resolve(res);
+				});
+		});
+	}
+
+	//上传头像图片
+	public static uploadUserHeadImage(image: Blob) {
+		let file = new FormData();
+		file.append("file", image);
+		return new Promise((resolve, reject) => {
+			appProxy.config.globalProperties
+				.$post("api/user/editHead/", file, 2)
+				.then((res: any) => {
+					resolve(res);
+				});
+		});
 	}
 }
