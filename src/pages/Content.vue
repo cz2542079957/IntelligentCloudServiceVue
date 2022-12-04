@@ -43,7 +43,7 @@
         <div class="filter"></div>
       </router-link>
       <router-link
-        to="/MNIST"
+        to="/CIFAR"
         class="box pointer unselectable"
         active-class="selectedBox"
       >
@@ -57,7 +57,7 @@
         <div class="filter"></div>
       </router-link>
       <router-link
-        to="/MNIST"
+        to="/TargetDetection"
         class="box pointer unselectable"
         active-class="selectedBox"
       >
@@ -151,8 +151,7 @@
 </template>
 
 <script lang='ts' setup>
-import { getCurrentInstance, onMounted, reactive } from "vue";
-import Nav from "../components/Nav.vue";
+import { getCurrentInstance, onMounted, reactive } from "vue"; 
 const { proxy } = getCurrentInstance();
 const props = defineProps(["page"]);
 const emits = defineEmits(["update:page"]);
@@ -190,9 +189,11 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
     box-sizing: border-box;
     padding: 10px 40px;
     border-right: 8px solid #cdcdcd;
+    opacity: 0.34;
     z-index: 10;
 
     &:hover {
+      opacity: 1;
       padding: 10px 60px;
       border-right: 8px solid #ff3300;
       background-color: #d9d9d9;
@@ -206,6 +207,7 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
   }
 
   > .bottom {
+    position: relative;
     @include fill_color("fill2");
     height: $bottom_height;
     width: 100%;
@@ -214,17 +216,10 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
     overflow-y: hidden;
     align-items: center;
     transform: scaleY(-1);
-
-    &:hover {
-      height: calc($bottom_height + 14px);
-    }
-
-    &:hover::-webkit-scrollbar {
-      height: 10px;
-    }
+    box-sizing: border-box;
 
     &::-webkit-scrollbar {
-      height: 0px;
+      height: 10px;
     }
 
     &::-webkit-scrollbar-thumb {
