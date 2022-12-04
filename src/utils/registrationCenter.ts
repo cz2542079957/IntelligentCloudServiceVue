@@ -10,7 +10,7 @@ import * as Util from "./utilFunctions";
 import "animate.css";
 
 const utils = { ...elementUIs, ...Util, ...axiosFunction };
- 
+
 export function register(app: App<Element>) {
 	// 挂载router
 	app.use(router);

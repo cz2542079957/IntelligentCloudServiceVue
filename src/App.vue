@@ -139,6 +139,7 @@ var config = reactive({
   signin: false, //是否进入登录页
   init: () => {
     themeSwitch.init(); //初始化主题
+    IsPhone(); //提示非电脑端用户
     config.autoLogin(); //自动登录
     bulletScreen.start(); //初始化弹幕
   },
@@ -343,12 +344,26 @@ function start() {
   }
 }
 
+function IsPhone() {
+  //获取浏览器navigator对象的userAgent属性（浏览器用于HTTP请求的用户代理头的值）
+  var info = navigator.userAgent;
+  //通过正则表达式的test方法判断是否包含“Mobile”字符串
+  var isPhone = /mobile/i.test(info);
+  //如果包含“Mobile”（是手机设备）则返回true
+  if (isPhone) {
+    getUtils().elMessage({
+      message: "为了您的使用体验，推荐使用电脑端访问本网站",
+      type: "warning",
+    });
+  }
+}
+
 onMounted(() => {
   config.init(); //页面初始化
 });
 </script>
   
-<style>
+<style lang="scss">
 * {
   text-decoration: none;
   list-style: none;
@@ -377,7 +392,30 @@ body,
 </style>
 
 <style lang="scss" scoped>
-@mixin btn() {
+@mixin scrollbar() {
+  &::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 14px;
+    overflow: hidden;
+    @include fill_color("fill2");
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include fill_color("fill12");
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 14px;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    border-radius: 14px;
+  }
+
+  &::-webkit-scrollbar-button {
+    border-radius: 14px;
+    height: 0;
+  }
 }
 
 .main {
@@ -545,29 +583,7 @@ body,
       @include box_shadow(0, 0, 3px, 1px, "border1");
       overflow-x: hidden;
 
-      &::-webkit-scrollbar {
-        width: 8px;
-        border-radius: 14px;
-        overflow: hidden;
-        @include fill_color("fill2");
-      }
-
-      &::-webkit-scrollbar-thumb {
-        @include fill_color("fill12");
-      }
-
-      &::-webkit-scrollbar-track {
-        border-radius: 14px;
-      }
-
-      &::-webkit-scrollbar-track-piece {
-        border-radius: 14px;
-      }
-
-      &::-webkit-scrollbar-button {
-        border-radius: 14px;
-        height: 0;
-      }
+      @include scrollbar();
 
       > .item {
         width: max-content;
