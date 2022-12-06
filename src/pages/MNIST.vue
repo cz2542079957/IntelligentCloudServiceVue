@@ -83,28 +83,6 @@ var data = reactive({
   display: flex;
   align-items: center;
 
-  > .content {
-    width: calc(100%);
-    height: 100%;
-    @include fill_color("fill4");
-    display: flex;
-    align-items: center;
-
-    .left {
-      width: 60%;
-      height: inherit;
-      border-right: 1px solid;
-      @include border_color("border1");
-      box-sizing: border-box;
-      padding: 100px;
-    }
-
-    .right {
-      width: 40%;
-      height: inherit;
-    }
-  }
-
   > .comment {
     position: relative;
     width: fit-content;

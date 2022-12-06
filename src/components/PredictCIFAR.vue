@@ -9,7 +9,7 @@
         <div class="upload">
           <img :src="cifar10.preview">
           <el-upload
-            ref="cifar10"
+            ref="cifar10Loader"
             :limit="1"
             :on-change="cifar10.change"
             :auto-upload="false"
@@ -38,7 +38,7 @@
         <div class="upload">
           <img :src="cifar100.preview">
           <el-upload
-            ref="cifar100"
+            ref="cifar100Loader"
             :limit="1"
             :on-change="cifar100.change"
             :auto-upload="false"
@@ -96,7 +96,7 @@ var cifar10 = reactive({
   preview: "src/assets/image/global/upload.svg",
   file: null,
   change: (file) => {
-    proxy.$refs.cifar10.clearFiles();
+    proxy.$refs.cifar10Loader.clearFiles();
     let url = getUtils().FileConvertor.file2Blob(file.raw);
     cifar10.preview = url;
     cifar10.file = file;
@@ -117,7 +117,7 @@ var cifar10 = reactive({
     });
     //根据模式设置参数
     let url = mode == 1 ? "ics/predict/lowCIFAR10" : "ics/predict/highCIFAR10";
-    let modeString = mode == 1 ? "简易10类" : "高精度10类";
+    let modeString = mode == 1 ? "低精度10类" : "高精度10类";
     //上传
     let formData = new FormData();
     formData.append("file", cifar10.file.raw);
@@ -137,10 +137,11 @@ var cifar10 = reactive({
         if (data?.code == 0) {
           history.predict.unshift({
             url: cifar10.preview,
-            result: data.data,
+            result: data.data.split(";").join(">"),
             time: Date.now(),
             mode: modeString,
           });
+
           cifar10.preview = cifar10.defultImage;
           cifar10.file = null;
         }
@@ -155,7 +156,7 @@ var cifar100 = reactive({
   preview: "src/assets/image/global/upload.svg",
   file: null,
   change: (file) => {
-    proxy.$refs.cifar10.clearFiles();
+    proxy.$refs.cifar100Loader.clearFiles();
     let url = getUtils().FileConvertor.file2Blob(file.raw);
     cifar100.preview = url;
     cifar100.file = file;
@@ -282,7 +283,7 @@ onMounted(() => {});
   }
 
   > .history {
-    width: 360px;
+    width: 450px;
     height: 100%;
     border-left: 2px solid;
     @include border_color("border2");
@@ -335,14 +336,14 @@ onMounted(() => {});
 
         > .result {
           width: max-content;
-          font-size: $fontSize7;
+          font-size: $fontSize5;
           font-weight: 600;
         }
 
         > .bottom {
           display: flex;
           @include font_color("font3");
-          font-size: $fontSize3;
+          font-size: $fontSize2;
 
           > .mode {
             width: max-content;
