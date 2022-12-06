@@ -7,9 +7,15 @@ import "element-plus/dist/index.css";
 import * as ElementIcons from "@element-plus/icons-vue";
 import * as elementUIs from "./elementUI";
 import * as Util from "./utilFunctions";
+import * as Buffers from "./buffer";
 import "animate.css";
 
-const utils = { ...elementUIs, ...Util, ...axiosFunction };
+const utils = {
+	...elementUIs,
+	...Util,
+	...axiosFunction,
+	...Buffers,
+};
 
 export function register(app: App<Element>) {
 	// 挂载router

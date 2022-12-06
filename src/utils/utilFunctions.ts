@@ -1,5 +1,3 @@
-import getUtils from "./registrationCenter";
-
 //时间转换工具包
 export class TimeTools {
 	//时间戳转日期(年月日)
@@ -115,6 +113,7 @@ export class TimeTools {
 	}
 }
 
+// 用户默认头像
 export class DefaultHeadImage {
 	public static images = [
 		new URL("../assets/image/defaultHeadImage/0.svg", import.meta.url)
@@ -154,33 +153,15 @@ export class DefaultHeadImage {
 	}
 }
 
-//文件上传工具
-export class FileUpload {
-	//todo
-
-	//上传题目的图片
-	public static uploadProblemImage(image: Blob) {
-		let file = new FormData();
-		file.append("file", image);
-		return new Promise((resolve, reject) => {
-			getUtils()
-				.$post("api/file/image/", file, 2)
-				.then((res: any) => {
-					resolve(res);
-				});
-		});
-	}
-
-	//上传头像图片
-	public static uploadUserHeadImage(image: Blob) {
-		let file = new FormData();
-		file.append("file", image);
-		return new Promise((resolve, reject) => {
-			appProxy.config.globalProperties
-				.$post("api/user/editHead/", file, 2)
-				.then((res: any) => {
-					resolve(res);
-				});
-		});
+// 文件格式转换
+export class FileConvertor {
+	public static file2Blob(file: File): string {
+		var url = "";
+		if (window.URL != undefined) {
+			url = window.URL.createObjectURL(file);
+		} else if (window.webkitURL != undefined) {
+			url = window.webkitURL.createObjectURL(file);
+		}
+		return url;
 	}
 }

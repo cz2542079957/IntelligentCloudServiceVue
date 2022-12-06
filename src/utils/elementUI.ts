@@ -1,9 +1,7 @@
-import {
-	ElLoading,
-	ElMenuItem,
-	ElMessage,
-	ElNotification,
-} from "element-plus";
+import { ElLoading, ElMessage, ElNotification } from "element-plus";
+import { useUserDataStore } from "../pinia/userData";
+import getUtils from "./registrationCenter";
+
 type types = "success" | "warning" | "info" | "error";
 type elMessageParams = {
 	message: string;
@@ -43,8 +41,13 @@ export function stateCodeHandler(data: any) {
 			type: "error",
 		});
 	}
-	if (Number(code) == 0) {
+	code = Number(code);
+	if (code == 0) {
 		return;
+	}
+	if ([11, 12, 13].includes(code)) {
+    let userData = useUserDataStore();
+    userData.logout();
 	}
 	let message = msg.split("\\")[0];
 	let type = msg.split("\\")[1] as types;

@@ -21,6 +21,12 @@ export const useUserDataStore = defineStore(PiniaNameSpace.UserData, {
 		//保存token
 		saveToken(token: string) {
 			AuthBuffer.token(token);
-		},
+    },
+    
+    logout() {
+      AuthBuffer.clearLoginCredentials();
+      this.username = "";
+      this.isSignin = false;
+    }
 	},
 });

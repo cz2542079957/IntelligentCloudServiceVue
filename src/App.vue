@@ -189,7 +189,7 @@ var bulletScreen = reactive({
     page: 1, //弹幕页
     limit: 80, //单页弹幕数
   },
-  show: true, // 显示弹幕
+  show: false, // 显示弹幕
   showList: false, //显示弹幕列表
   tempData: "", // 我的弹幕
   bufferedData: [], // 缓存的弹幕
@@ -392,32 +392,6 @@ body,
 </style>
 
 <style lang="scss" scoped>
-@mixin scrollbar() {
-  &::-webkit-scrollbar {
-    width: 8px;
-    border-radius: 14px;
-    overflow: hidden;
-    @include fill_color("fill2");
-  }
-
-  &::-webkit-scrollbar-thumb {
-    @include fill_color("fill12");
-  }
-
-  &::-webkit-scrollbar-track {
-    border-radius: 14px;
-  }
-
-  &::-webkit-scrollbar-track-piece {
-    border-radius: 14px;
-  }
-
-  &::-webkit-scrollbar-button {
-    border-radius: 14px;
-    height: 0;
-  }
-}
-
 .main {
   position: relative;
   width: 100%;

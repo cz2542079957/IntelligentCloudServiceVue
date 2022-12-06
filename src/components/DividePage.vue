@@ -7,7 +7,7 @@
       <div class="right">
         <slot name="right"></slot>
         <div
-          class="divide"
+          class="divide pointer"
           @click="config.switch"
         >
           <el-icon
@@ -23,12 +23,24 @@
 </template>
 
 <script lang='ts' setup>
-import { reactive } from "vue";
+import { getCurrentInstance, reactive } from "vue";
+const { proxy } = getCurrentInstance() as any;
 
 var config = reactive({
   main: 1,
   switch: () => {
     config.main = config.main == 1 ? 2 : 1;
+  },
+});
+
+var upload = reactive({
+  test: "",
+  preview: "",
+  change: (file) => {
+    proxy.$refs.upload.clearFiles();
+    // let url = getUtils().FileConvertor.file2Blob(file.raw);
+    // upload.preview = url;
+    upload.test = "hello";
   },
 });
 </script>
@@ -40,6 +52,7 @@ var config = reactive({
   @include fill_color("fill4");
   display: flex;
   align-items: center;
+  overflow: hidden;
 
   > .content {
     width: calc(100%);
