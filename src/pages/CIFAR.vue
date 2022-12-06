@@ -1,5 +1,6 @@
 <template>
   <div class="cifar">
+    <!-- 左右分隔界面  -->
     <DividePage>
       <template v-slot:left>
         <PredictCIFAR></PredictCIFAR>
@@ -8,6 +9,7 @@
         <Wiki :data="data.wiki"></Wiki>
       </template>
     </DividePage>
+    <!-- 评论去 -->
     <div class="comment">
       <Comment module="2"></Comment>
     </div>

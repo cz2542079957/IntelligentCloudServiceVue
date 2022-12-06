@@ -17,15 +17,18 @@
       </router-view>
     </div>
     <div
-      class="divide pointer unselectable"
-      :style="('bottom: ' + (divide.height - 20 )+ 'px;')"
+      :class="'divide pointer unselectable ' + (divide.reverse ? 'divideReverse'  : '')"
+      :style="'bottom: ' + (divide.height - 20 )+ 'px;'"
       @mousedown.stop="divide.mouseDown"
       @mousemove.stop="divide.mouseMove"
       @mouseup.stop="divide.mouseup"
     >
+      <el-icon size="35px">
+        <SemiSelect />
+      </el-icon>
     </div>
     <div
-      class="bottom"
+      :class="'bottom ' + (divide.waterFall ? 'bottomWaterFall' : '')"
       :style="('height: ' + divide.height + 'px;')"
     >
 
@@ -178,9 +181,22 @@ var config = reactive({
   },
 });
 
+// 子界面索引
+var index = reactive([
+  "关于",
+  "手写体识别",
+  "图片分类实现",
+  "图片去除雾霾",
+  "图片去除模糊",
+  "图片超分辨率",
+]);
+
+//下方拖动条
 var divide = reactive({
   isMouseDown: false,
-  height: 220,
+  height: 220, //高度
+  reverse: false, //图标是否翻转
+  waterFall: false, //是否以瀑布流显示
   mouseDown: (e) => {
     console.log(e.pageY, divide.height);
     divide.isMouseDown = true;
@@ -191,6 +207,18 @@ var divide = reactive({
       window.innerHeight,
       window.innerHeight - e.clientY + 10
     );
+    if (Math.abs(window.innerHeight - divide.height) < 5) {
+      // 比较靠近顶部
+      divide.reverse = true;
+    } else {
+      // 还原
+      divide.reverse = false;
+    }
+    if (divide.height > 300) {
+      divide.waterFall = true;
+    } else {
+      divide.waterFall = false;
+    }
   },
   mouseup: (e) => {
     if (!divide.isMouseDown) return;
@@ -203,6 +231,7 @@ var divide = reactive({
 });
 
 onMounted(() => {
+  //在这里绑定到全局的原因是小滑块面积太小，比较容易触发梨块滑块事件
   window.addEventListener("mousemove", divide.mouseMove);
   window.addEventListener("mouseup", divide.mouseup);
 });
@@ -251,14 +280,28 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
 
   > .divide {
     width: 120px;
-    height: 40px;
-    border-radius: 12px;
+    height: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     @include fill_color("fill12");
-    bottom: 300px;
+    bottom: 320px;
     right: calc(50% - 60px);
-    z-index: 10;
-    @include box-shadow(0, 0, 2px, 1px, "border1");
+    z-index: 2;
+    transition: translate border 300ms;
+    transform: translateY(-20px);
+  }
+
+  // 翻转
+  > .divideReverse {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transform: translateY(10px);
   }
 
   > .bottom {
@@ -303,7 +346,7 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
       flex-grow: 0;
       flex-shrink: 0;
       transform: scaleY(-1);
-      transition-duration: 240ms;
+      transition: all 240ms;
 
       &:hover > img {
         filter: blur(0);
@@ -374,6 +417,11 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
         transition-duration: 400ms;
       }
     }
+  }
+
+  > .bottomWaterFall {
+    flex-wrap: wrap-reverse;
+    justify-content: flex-start;
   }
 }
 </style>
