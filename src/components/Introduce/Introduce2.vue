@@ -36,6 +36,8 @@
   @include fill_color("fill2");
   box-sizing: border-box;
   padding: 28px;
+  overflow-y: scroll;
+  @include scrollbar();
 
   > .id {
     position: absolute;

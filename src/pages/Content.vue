@@ -6,14 +6,29 @@
     >
       主页
     </div>
-    <div class="view">
+    <div
+      class="view"
+      :style="'height: calc(100% - '+ divide.height+ 'px);'  "
+    >
       <router-view v-slot="{Component}">
         <transition enter-active-class="animate__animated animate__fadeInUp">
           <component :is="Component" />
         </transition>
       </router-view>
     </div>
-    <div class="bottom">
+    <div
+      class="divide pointer unselectable"
+      :style="('bottom: ' + (divide.height - 20 )+ 'px;')"
+      @mousedown.stop="divide.mouseDown"
+      @mousemove.stop="divide.mouseMove"
+      @mouseup.stop="divide.mouseup"
+    >
+    </div>
+    <div
+      class="bottom"
+      :style="('height: ' + divide.height + 'px;')"
+    >
+
       <router-link
         to="/Introduce"
         class="box pointer unselectable"
@@ -163,7 +178,34 @@ var config = reactive({
   },
 });
 
-onMounted(() => {});
+var divide = reactive({
+  isMouseDown: false,
+  height: 220,
+  mouseDown: (e) => {
+    console.log(e.pageY, divide.height);
+    divide.isMouseDown = true;
+  },
+  mouseMove: (e) => {
+    if (!divide.isMouseDown) return;
+    divide.height = Math.min(
+      window.innerHeight,
+      window.innerHeight - e.clientY + 10
+    );
+  },
+  mouseup: (e) => {
+    if (!divide.isMouseDown) return;
+    divide.isMouseDown = false;
+    divide.height = Math.min(
+      window.innerHeight,
+      window.innerHeight - e.clientY + 10
+    );
+  },
+});
+
+onMounted(() => {
+  window.addEventListener("mousemove", divide.mouseMove);
+  window.addEventListener("mouseup", divide.mouseup);
+});
 </script>
 
 <style lang='scss' scoped>
@@ -176,6 +218,7 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  overflow: none;
 
   > .backToHome {
     position: absolute;
@@ -206,8 +249,21 @@ $bottom_img: $bottom_item_height - 40px - 2 * 10px;
     @include fill_color("fill4");
   }
 
+  > .divide {
+    width: 120px;
+    height: 40px;
+    border-radius: 12px;
+    position: fixed;
+    @include fill_color("fill12");
+    bottom: 300px;
+    right: calc(50% - 60px);
+    z-index: 10;
+    @include box-shadow(0, 0, 2px, 1px, "border1");
+  }
+
   > .bottom {
-    position: relative;
+    position: absolute;
+    bottom: 0;
     @include fill_color("fill2");
     height: $bottom_height;
     width: 100%;
