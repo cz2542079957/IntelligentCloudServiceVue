@@ -3,14 +3,10 @@
     <div class="content">
       <DividePage>
         <template v-slot:left>
-          <div class="left">
-            <div class=""></div>
-          </div>
+          <PredictCIFAR></PredictCIFAR>
         </template>
         <template v-slot:right>
-          <div class="right">
-
-          </div>
+          <Wiki></Wiki>
         </template>
       </DividePage>
     </div>
@@ -23,9 +19,14 @@
 <script lang='ts' setup>
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
+import PredictCIFAR from "../components/PredictCIFAR.vue";
+import Wiki from "../components/Wiki.vue";
+
+
+
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss' scoped> 
 .cifar {
   width: 100%;
   height: 100%;

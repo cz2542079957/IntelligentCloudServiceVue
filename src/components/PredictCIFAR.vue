@@ -1,17 +1,17 @@
 <template>
   <div
     class="outer"
-    ref="predictMNIST"
+    ref="predictCIFAR"
   >
     <div class="predict">
-      <div class="lowMNIST">
-        <div class="title">简易手写体识别</div>
+      <div class="CIFAR10">
+        <div class="title">10分类识别</div>
         <div class="upload">
-          <img :src="fileLoader.previewLow">
+          <img :src="cifar10.preview">
           <el-upload
-            ref="uploadLow"
+            ref="cifar10"
             :limit="1"
-            :on-change="fileLoader.changeLow"
+            :on-change="cifar10.change"
             :auto-upload="false"
             :show-file-list="false"
           >
@@ -22,30 +22,38 @@
         </div>
         <div
           class="start pointer"
-          @click="fileLoader.uploadLow"
-        >开始</div>
-      </div>
-      <div class="highMNIST">
-        <div class="title">高精度手写体识别</div>
-        <div class="upload">
-          <img :src="fileLoader.previewHigh">
-          <el-upload
-            ref="uploadHigh"
-            :limit="1"
-            :on-change="fileLoader.changeHigh"
-            :auto-upload="false"
-            :show-file-list="false"
-          >
-            <template #trigger>
-              <div class="btn pointer">选择图片</div>
-            </template>
-          </el-upload>
-        </div>
-        <div
-          class="start pointer"
-          @click="fileLoader.uploadHigh"
+          @click="cifar10.upload(1)"
         >
-          开始
+          低精度识别
+        </div>
+        <div
+          class="start pointer"
+          @click="cifar10.upload(2)"
+        >
+          高精度识别
+        </div>
+      </div>
+      <div class="CIFAR100">
+        <div class="title">100分类识别</div>
+        <div class="upload">
+          <img :src="cifar100.preview">
+          <el-upload
+            ref="cifar100"
+            :limit="1"
+            :on-change="cifar100.change"
+            :auto-upload="false"
+            :show-file-list="false"
+          >
+            <template #trigger>
+              <div class="btn pointer">选择图片</div>
+            </template>
+          </el-upload>
+        </div>
+        <div
+          class="start pointer"
+          @click="cifar100.upload"
+        >
+          开始识别
         </div>
       </div>
     </div>
@@ -83,27 +91,18 @@ var config = reactive({
 });
 
 //上传
-var fileLoader = reactive({
+var cifar10 = reactive({
   defultImage: "src/assets/image/global/upload.svg",
-  previewLow: "src/assets/image/global/upload.svg",
-  fileLow: null,
-  previewHigh: "src/assets/image/global/upload.svg",
-  fileHigh: null,
-  changeLow: (file) => {
-    proxy.$refs.uploadLow.clearFiles();
+  preview: "src/assets/image/global/upload.svg",
+  file: null,
+  change: (file) => {
+    proxy.$refs.cifar10.clearFiles();
     let url = getUtils().FileConvertor.file2Blob(file.raw);
-    fileLoader.previewLow = url;
-    fileLoader.fileLow = file;
+    cifar10.preview = url;
+    cifar10.file = file;
   },
-  changeHigh: (file) => {
-    proxy.$refs.uploadHigh.clearFiles();
-    let url = getUtils().FileConvertor.file2Blob(file.raw);
-    fileLoader.previewHigh = url;
-    fileLoader.fileHigh = file;
-  },
-
-  uploadLow: () => {
-    if (fileLoader.previewLow == fileLoader.defultImage) {
+  upload: (mode: number) => {
+    if (cifar10.preview == cifar10.defultImage) {
       getUtils().elMessage({ message: "请选择图片", type: "warning" });
       return;
     }
@@ -113,16 +112,19 @@ var fileLoader = reactive({
     }
     //等待
     config.load = getUtils().elLoading({
-      node: proxy.$refs.predictMNIST,
+      node: proxy.$refs.predictCIFAR,
       text: "识别中",
     });
+    //根据模式设置参数
+    let url = mode == 1 ? "ics/predict/lowCIFAR10" : "ics/predict/highCIFAR10";
+    let modeString = mode == 1 ? "简易10类" : "高精度10类";
     //上传
     let formData = new FormData();
-    formData.append("file", fileLoader.fileLow.raw);
+    formData.append("file", cifar10.file.raw);
     formData.append("username", userData.username);
     getUtils()
       .$post({
-        url: "ics/predict/lowMNIST",
+        url,
         data: formData,
         config: {
           headers: {
@@ -134,20 +136,32 @@ var fileLoader = reactive({
         let data = res.data;
         if (data?.code == 0) {
           history.predict.unshift({
-            url: fileLoader.previewLow,
+            url: cifar10.preview,
             result: data.data,
             time: Date.now(),
-            mode: "简易",
+            mode: modeString,
           });
-          fileLoader.previewLow = fileLoader.defultImage;
-          fileLoader.fileLow = null;
+          cifar10.preview = cifar10.defultImage;
+          cifar10.file = null;
         }
         config.closeLoad();
         getUtils().stateCodeHandler(data);
       });
   },
-  uploadHigh: () => {
-    if (fileLoader.previewHigh == fileLoader.defultImage) {
+});
+
+var cifar100 = reactive({
+  defultImage: "src/assets/image/global/upload.svg",
+  preview: "src/assets/image/global/upload.svg",
+  file: null,
+  change: (file) => {
+    proxy.$refs.cifar10.clearFiles();
+    let url = getUtils().FileConvertor.file2Blob(file.raw);
+    cifar100.preview = url;
+    cifar100.file = file;
+  },
+  upload: (mode: number) => {
+    if (cifar100.preview == cifar100.defultImage) {
       getUtils().elMessage({ message: "请选择图片", type: "warning" });
       return;
     }
@@ -157,17 +171,16 @@ var fileLoader = reactive({
     }
     //等待
     config.load = getUtils().elLoading({
-      node: proxy.$refs.predictMNIST,
+      node: proxy.$refs.predictCIFAR,
       text: "识别中",
     });
     //上传
     let formData = new FormData();
-    console.log(fileLoader.fileHigh);
-    formData.append("file", fileLoader.fileHigh.raw);
+    formData.append("file", cifar100.file.raw);
     formData.append("username", userData.username);
     getUtils()
       .$post({
-        url: "ics/predict/highMNIST",
+        url: "ics/predict/CIFAR100",
         data: formData,
         config: {
           headers: {
@@ -179,13 +192,13 @@ var fileLoader = reactive({
         let data = res.data;
         if (data?.code == 0) {
           history.predict.unshift({
-            url: fileLoader.previewHigh,
+            url: cifar100.preview,
             result: data.data,
             time: Date.now(),
-            mode: "高精度",
+            mode: "100类",
           });
-          fileLoader.previewHigh = fileLoader.defultImage;
-          fileLoader.fileHigh = null;
+          cifar100.preview = cifar100.defultImage;
+          cifar100.file = null;
         }
         config.closeLoad();
         getUtils().stateCodeHandler(data);
@@ -225,19 +238,18 @@ onMounted(() => {});
 
   > .predict {
     width: calc(100% - 360px);
-    min-width: 500px;
+    min-width: 400px;
     display: flex;
     align-items: center;
     justify-content: space-around;
 
-    > .lowMNIST,
-    > .highMNIST {
+    > .CIFAR10,
+    > .CIFAR100 {
       display: flex;
       flex-direction: column;
       align-items: center;
 
       > .title {
-        width: max-content;
         font-size: $fontSize6;
         @include font_color("font1");
       }
@@ -264,7 +276,7 @@ onMounted(() => {});
 
       > .start {
         @include btn();
-        margin: 10px;
+        margin-top: 10px;
       }
     }
   }
