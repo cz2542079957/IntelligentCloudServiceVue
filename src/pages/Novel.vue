@@ -2,18 +2,14 @@
   <div class="outer">
     <DividePage>
       <template v-slot:left>
-        <div class="left">
-          <div class=""></div>
-        </div>
+
       </template>
       <template v-slot:right>
-        <div class="right">
 
-        </div>
       </template>
     </DividePage>
     <div class="comment">
-      <Comment module="3"></Comment>
+      <Comment module="5"></Comment>
     </div>
   </div>
 </template>

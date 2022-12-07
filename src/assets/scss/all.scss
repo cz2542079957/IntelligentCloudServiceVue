@@ -4,6 +4,7 @@
 @mixin scrollbar() {
 	&::-webkit-scrollbar {
 		width: 8px;
+		height: 8px;
 		border-radius: 14px;
 		overflow: hidden;
 		@include fill_color("fill2");
@@ -24,5 +25,6 @@
 	&::-webkit-scrollbar-button {
 		border-radius: 14px;
 		height: 0;
+		width: 0;
 	}
 }

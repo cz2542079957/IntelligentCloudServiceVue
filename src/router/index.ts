@@ -22,6 +22,19 @@ const router = createRouter({
 			component: () => import("../pages/CIFAR.vue"),
 		},
 		{
+			path: "/AcrosticPoetry",
+			component: () => import("../pages/AcrosticPoetry.vue"),
+		},
+		{
+			path: "/Novel",
+			component: () => import("../pages/Novel.vue"),
+		},
+		{
+			path: "/PictureDefogging",
+			component: () => import("../pages/PictureDefogging.vue"),
+		},
+
+		{
 			path: "/TargetDetection",
 			component: () => import("../pages/TargetDetection.vue"),
 		},

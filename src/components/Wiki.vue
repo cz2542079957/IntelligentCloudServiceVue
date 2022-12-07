@@ -1,5 +1,5 @@
 <template>
-  <div class="outer">
+  <div class="wiki">
     <div v-for="(item, index) in props.data">
       <div
         v-if="item.class != 'img'"
@@ -20,7 +20,7 @@ const props = defineProps(["data"]);
 </script>
 
 <style lang='scss' scoped>
-.outer {
+.wiki {
   position: relative;
   width: 100%;
   min-width: 500px;
@@ -59,10 +59,10 @@ const props = defineProps(["data"]);
     @include font_color("font2");
   }
 
-  img{
+  img {
     min-width: 200px;
     max-width: 500px;
-    max-height: 240px;
+    max-height: 400px;
     margin: 8px 40px;
   }
 }

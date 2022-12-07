@@ -31,7 +31,7 @@
       :class="'bottom ' + (divide.waterFall ? 'bottomWaterFall' : '')"
       :style="('height: ' + divide.height + 'px;')"
     >
-
+      <!-- 关于 -->
       <router-link
         to="/Introduce"
         class="box pointer unselectable"
@@ -46,6 +46,7 @@
         >
         <div class="filter"></div>
       </router-link>
+      <!-- 简单数字识别 -->
       <router-link
         to="/MNIST"
         class="box pointer unselectable"
@@ -60,6 +61,7 @@
         >
         <div class="filter"></div>
       </router-link>
+      <!-- 简单图片识别 -->
       <router-link
         to="/CIFAR"
         class="box pointer unselectable"
@@ -73,6 +75,70 @@
           alt=""
         >
         <div class="filter"></div>
+      </router-link>
+      <!-- 藏头诗 -->
+      <router-link
+        to="/AcrosticPoetry"
+        class="box pointer unselectable"
+        active-class="selectedBox"
+      >
+        <div class="title">
+          藏头诗
+        </div>
+        <img
+          src="../assets/image/type/mbjc.png"
+          alt=""
+        >
+        <div class="filter"></div>
+
+      </router-link>
+      <!-- 小说生成器 -->
+      <router-link
+        to="/Novel"
+        class="box pointer unselectable"
+        active-class="selectedBox"
+      >
+        <div class="title">
+          小说生成器
+        </div>
+        <img
+          src="../assets/image/type/yuyifenge.png"
+          alt=""
+        >
+        <div class="filter"></div>
+
+      </router-link>
+      <!-- 图片去雾 -->
+      <router-link
+        to="/PictureDefogging"
+        class="box pointer unselectable"
+        active-class="selectedBox"
+      >
+        <div class="title">
+          图片去雾
+        </div>
+        <img
+          src="../assets/image/type/slfg.png"
+          alt=""
+        >
+        <div class="filter"></div>
+
+      </router-link>
+      <!-- 图片超分辨率 -->
+      <router-link
+        to="/ImageSuperResolution"
+        class="box pointer unselectable"
+        active-class="selectedBox"
+      >
+        <div class="title">
+          图片超分辨率
+        </div>
+        <img
+          src="../assets/image/type/qjfg.png"
+          alt=""
+        >
+        <div class="filter"></div>
+
       </router-link>
       <router-link
         to="/TargetDetection"
@@ -185,9 +251,9 @@ var config = reactive({
 var index = reactive([
   "关于",
   "手写体识别",
-  "图片分类实现",
-  "图片去除雾霾",
-  "图片去除模糊",
+  "藏头诗",
+  "AI小说",
+  "图片去雾",
   "图片超分辨率",
 ]);
 
@@ -198,14 +264,13 @@ var divide = reactive({
   reverse: false, //图标是否翻转
   waterFall: false, //是否以瀑布流显示
   mouseDown: (e) => {
-    console.log(e.pageY, divide.height);
     divide.isMouseDown = true;
   },
   mouseMove: (e) => {
     if (!divide.isMouseDown) return;
     divide.height = Math.min(
       window.innerHeight,
-      window.innerHeight - e.clientY + 10
+      window.innerHeight - e.clientY
     );
     if (Math.abs(window.innerHeight - divide.height) < 5) {
       // 比较靠近顶部
@@ -214,6 +279,11 @@ var divide = reactive({
       // 还原
       divide.reverse = false;
     }
+
+    if (Math.abs(5 - divide.height) < 50) {
+      divide.height = Math.max(0, window.innerHeight - e.clientY);
+    }
+
     if (divide.height > 300) {
       divide.waterFall = true;
     } else {
@@ -223,10 +293,6 @@ var divide = reactive({
   mouseup: (e) => {
     if (!divide.isMouseDown) return;
     divide.isMouseDown = false;
-    divide.height = Math.min(
-      window.innerHeight,
-      window.innerHeight - e.clientY + 10
-    );
   },
 });
 
