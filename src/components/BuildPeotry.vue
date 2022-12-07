@@ -115,21 +115,6 @@ var history = reactive([]);
 </script>
 
 <style lang='scss' scoped>
-@mixin btn() {
-  box-sizing: border-box;
-  padding: 4px 14px;
-  font-size: $fontSize5;
-  @include font_color("font1");
-  border-radius: 8px;
-  @include fill_color("fill1");
-  transition: 200ms;
-
-  &:hover {
-    @include font_color("font6");
-    @include fill_color("fill13");
-  }
-}
-
 .outer {
   width: 100%;
   height: 100%;

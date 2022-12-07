@@ -5,11 +5,11 @@
 
       </template>
       <template v-slot:right>
-
+        <Wiki></Wiki>
       </template>
     </DividePage>
     <div class="comment">
-      <Comment module="5"></Comment>
+      <Comment module="4"></Comment>
     </div>
   </div>
 </template>
@@ -17,6 +17,8 @@
 <script lang='ts' setup>
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
+
+import Wiki from "../components/Wiki.vue";
 </script>
 
 <style lang='scss' scoped>

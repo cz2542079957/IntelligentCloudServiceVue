@@ -86,7 +86,7 @@
           藏头诗
         </div>
         <img
-          src="../assets/image/type/mbjc.png"
+          src="../assets/image/type/cts.png"
           alt=""
         >
         <div class="filter"></div>
@@ -102,7 +102,7 @@
           小说生成器
         </div>
         <img
-          src="../assets/image/type/yuyifenge.png"
+          src="../assets/image/type/xs.png"
           alt=""
         >
         <div class="filter"></div>
@@ -118,7 +118,7 @@
           图片去雾
         </div>
         <img
-          src="../assets/image/type/slfg.png"
+          src="../assets/image/type/tpqw.png"
           alt=""
         >
         <div class="filter"></div>
@@ -134,7 +134,7 @@
           图片超分辨率
         </div>
         <img
-          src="../assets/image/type/qjfg.png"
+          src="../assets/image/type/tpcfbl.png"
           alt=""
         >
         <div class="filter"></div>
@@ -200,36 +200,7 @@
         <div class="filter"></div>
 
       </router-link>
-      <router-link
-        to="/MNIST"
-        class="box pointer unselectable"
-        active-class="selectedBox"
-      >
-        <div class="title">
-          物体检测
-        </div>
-        <img
-          src="../assets/image/type/yuyifenge.png"
-          alt=""
-        >
-        <div class="filter"></div>
 
-      </router-link>
-      <router-link
-        to="/MNIST"
-        class="box pointer unselectable"
-        active-class="selectedBox"
-      >
-        <div class="title">
-          物体检测
-        </div>
-        <img
-          src="../assets/image/type/yuyifenge.png"
-          alt=""
-        >
-        <div class="filter"></div>
-
-      </router-link>
     </div>
   </div>
 </template>

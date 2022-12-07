@@ -115,3 +115,5 @@ export function $delete(opt: deleteOpt) {
 		},
 	});
 }
+
+export const staticUrl = "http://127.0.0.1:4077/file/";

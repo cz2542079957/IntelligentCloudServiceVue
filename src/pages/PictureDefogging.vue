@@ -2,18 +2,14 @@
   <div class="outer">
     <DividePage>
       <template v-slot:left>
-        <div class="left">
-          <div class=""></div>
-        </div>
+        <Defogging></Defogging>
       </template>
       <template v-slot:right>
-        <div class="right">
-
-        </div>
+        <Wiki></Wiki>
       </template>
     </DividePage>
     <div class="comment">
-      <Comment module="3"></Comment>
+      <Comment module="4"></Comment>
     </div>
   </div>
 </template>
@@ -21,6 +17,8 @@
 <script lang='ts' setup>
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
+import Defogging from "../components/Defogging.vue";
+import Wiki from "../components/Wiki.vue";
 </script>
 
 <style lang='scss' scoped>
