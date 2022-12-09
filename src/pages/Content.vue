@@ -156,7 +156,7 @@
 
       </router-link>
       <router-link
-        to="/MNIST"
+        to="/SemanticSegmentation"
         class="box pointer unselectable"
         active-class="selectedBox"
       >
@@ -171,7 +171,7 @@
 
       </router-link>
       <router-link
-        to="/MNIST"
+        to="/InstanceSegmentation"
         class="box pointer unselectable"
         active-class="selectedBox"
       >
@@ -186,7 +186,7 @@
 
       </router-link>
       <router-link
-        to="/MNIST"
+        to="/PanoramicSegmentation"
         class="box pointer unselectable"
         active-class="selectedBox"
       >

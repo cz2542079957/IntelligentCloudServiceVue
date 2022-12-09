@@ -5,11 +5,13 @@
         <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 38px;">尽情期待</div>
       </template>
       <template v-slot:right>
-        <Wiki></Wiki>
+        <div class="right">
+
+        </div>
       </template>
     </DividePage>
     <div class="comment">
-      <Comment module="4"></Comment>
+      <Comment module="9"></Comment>
     </div>
   </div>
 </template>
@@ -17,8 +19,6 @@
 <script lang='ts' setup>
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
-
-import Wiki from "../components/Wiki.vue";
 </script>
 
 <style lang='scss' scoped>

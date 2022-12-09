@@ -42,15 +42,20 @@ const router = createRouter({
 			path: "/TargetDetection",
 			component: () => import("../pages/TargetDetection.vue"),
 		},
+		{
+			path: "/SemanticSegmentation",
+			component: () => import("../pages/SemanticSegmentation.vue"),
+		},
+		{
+			path: "/InstanceSegmentation",
+			component: () => import("../pages/InstanceSegmentation.vue"),
+		},
+		{
+			path: "/PanoramicSegmentation",
+			component: () => import("../pages/PanoramicSegmentation.vue"),
+		},
 	],
 });
 
-/*
-
-semantic segmentation
-Instance segmentation
-Panoramic segmentation
-
-*/
 
 export default router;

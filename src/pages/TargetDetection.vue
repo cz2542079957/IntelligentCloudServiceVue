@@ -2,9 +2,7 @@
   <div class="outer">
     <DividePage>
       <template v-slot:left>
-        <div class="left">
-          <div class=""></div>
-        </div>
+        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 38px;">尽情期待</div>
       </template>
       <template v-slot:right>
         <div class="right">
@@ -13,7 +11,7 @@
       </template>
     </DividePage>
     <div class="comment">
-      <Comment module="3"></Comment>
+      <Comment module="7"></Comment>
     </div>
   </div>
 </template>
