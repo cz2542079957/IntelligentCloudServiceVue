@@ -1,15 +1,15 @@
 <template>
-  <div class="outer">
+  <div class="pictureSuperResolution">
     <DividePage>
       <template v-slot:left>
-        <Defogging></Defogging>
+        <SuperResolution></SuperResolution>
       </template>
       <template v-slot:right>
         <Wiki></Wiki>
       </template>
     </DividePage>
     <div class="comment">
-      <Comment module="5"></Comment>
+      <Comment module="6"></Comment>
     </div>
   </div>
 </template>
@@ -17,12 +17,12 @@
 <script lang='ts' setup>
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
-import Defogging from "../components/Defogging.vue";
+import SuperResolution from "../components/SuperResolution.vue";
 import Wiki from "../components/Wiki.vue";
 </script>
 
 <style lang='scss' scoped>
-.outer {
+.pictureSuperResolution {
   width: 100%;
   height: 100%;
   @include fill_color("fill4");

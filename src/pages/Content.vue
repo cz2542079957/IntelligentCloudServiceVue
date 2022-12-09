@@ -126,7 +126,7 @@
       </router-link>
       <!-- 图片超分辨率 -->
       <router-link
-        to="/ImageSuperResolution"
+        to="/PictureSuperResolution"
         class="box pointer unselectable"
         active-class="selectedBox"
       >

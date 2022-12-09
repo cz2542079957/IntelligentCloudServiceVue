@@ -33,6 +33,10 @@ const router = createRouter({
 			path: "/PictureDefogging",
 			component: () => import("../pages/PictureDefogging.vue"),
 		},
+		{
+			path: "/PictureSuperResolution",
+			component: () => import("../pages/PictureSuperResolution.vue"),
+		},
 
 		{
 			path: "/TargetDetection",
