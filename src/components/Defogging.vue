@@ -1,5 +1,8 @@
 <template>
-  <div class="defogging">
+  <div
+    class="defogging"
+    ref="defogging"
+  >
     <img :src="config.input.url">
     <div class="options">
       <el-upload
@@ -38,6 +41,7 @@ const { proxy } = getCurrentInstance() as any;
 const userData = useUserDataStore();
 
 var config = reactive({
+  loading: null,
   defultImage: "src/assets/image/global/upload.svg",
   input: { url: "src/assets/image/global/upload.svg", file: null },
   output: { url: "src/assets/image/global/upload.svg" },
@@ -61,6 +65,10 @@ var config = reactive({
       getUtils().elMessage({ message: "请先登录", type: "warning" });
       return;
     }
+    config.loading = getUtils().elLoading({
+      node: proxy.$refs.defogging,
+      text: "正在拼命运算中...",
+    });
     let formData = new FormData();
     formData.append("file", config.input.file);
     formData.append("username", userData.username);
@@ -83,6 +91,11 @@ var config = reactive({
         let data = res.data;
         if (data?.code == 0) {
           config.output.url = getUtils().staticUrl + data.data;
+          config.loading?.close();
+          getUtils().elNotification({
+            message: "图像去雾完成",
+            type: "success",
+          });
         }
         getUtils().stateCodeHandler(data);
       });
