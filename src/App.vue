@@ -135,7 +135,7 @@ const userData = useUserDataStore();
 const { proxy } = getCurrentInstance() as any;
 
 var config = reactive({
-  page: 1, //当前页面
+  page: 0, //当前页面
   signin: false, //是否进入登录页
   init: () => {
     themeSwitch.init(); //初始化主题

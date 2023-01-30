@@ -15,7 +15,7 @@
 </template>
 
 <script lang='ts' setup>
-import { reactive } from "@vue/reactivity";
+import { reactive } from "vue";
 import Comment from "../components/Comment.vue";
 import DividePage from "../components/DividePage.vue";
 import SuperResolution from "../components/SuperResolution.vue";
